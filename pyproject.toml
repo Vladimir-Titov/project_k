@@ -1,0 +1,111 @@
+[project]
+name = "project-k"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "alembic>=1.18.5",
+    "asyncpg>=0.31.0",
+    "fastapi>=0.139.2",
+    "sqlalchemy>=2.0.51",
+    "sqlmodel>=0.0.39",
+    "uvicorn>=0.51.0",
+]
+
+[tool.ruff]
+# Allow lines to be as long as 120.
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "A",
+    "ASYNC",
+    "B", # flake8-bugbear
+    "C",
+    "COM",
+    "E", # pycodestyle errors
+    "F", # pyflake
+    "Q",
+    "I",
+    "G",
+    "ERA",
+    "RUF",
+    "N",
+    "PL",
+    "PIE",
+    "PYI",
+    "PGH",
+    "RET",
+    "SIM",
+    "TID",
+    "LOG",
+    "INT",
+    "ICN",
+    "SLOT",
+    "TRY",
+    "UP",
+    "W", # pycodestyle warnings
+]
+ignore = [
+    "F403",
+    "B904", # simple raise
+    "COM812",
+    "RUF012", # Mutable class attributes should be annotated
+    "PLW2901",
+    "PLR0913",
+    "PLC0415",
+    "SIM102",
+    "TRY003",
+    "TRY300",
+    "TRY400",
+    "RET502", # Implicit return None
+    "RET503",
+    "ASYNC109",
+]
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".agents/scripts/*",
+    "logs",
+    "tmp",
+    "alembic/*",
+    "tests/utils/definitions.py",
+    "*.egg-info",
+    "build",
+    "dist",
+    "__pycache__",
+]
+flake8-quotes = {inline-quotes = "single", multiline-quotes = "double", docstring-quotes = "double"}
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"] # These modules can contain unused imports
+"tests/*" = ["PLR2004"]
+"settings/*.py" = ["F401"]
+"*example*.py" = ["F841"] # # Local variable can be assigned but never used in examples code
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.isort]
+lines_after_imports = 2
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+use_parentheses = true
+from_first = false
+sections = [
+    "FUTURE",
+    "STDLIB",
+    "THIRDPARTY",
+    "FIRSTPARTY",
+    "LOCALFOLDER",
+]
+default_section = "THIRDPARTY"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.22",
+]

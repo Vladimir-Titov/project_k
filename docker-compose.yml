@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  project_k_postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 40321:5432
