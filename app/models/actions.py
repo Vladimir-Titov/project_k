@@ -9,7 +9,7 @@ from app.models.base import TableBase
 
 
 class Actions(TableBase, table=True):
-    action: str = Field(nullable=False)
+    title: str = Field(nullable=False)
     description: str = Field(nullable=True)
     is_active: bool = Field(
         default=True,

@@ -3,7 +3,6 @@ from uuid import UUID
 from sqlalchemy import Column, Enum
 from sqlmodel import Field
 
-from app.enums.actions import ActionsType
 from app.enums.fights import FightStatus
 from app.models.base import TableBase
 
@@ -25,9 +24,22 @@ class Fight(TableBase, table=True):
         ),
     )
     version: int = Field(default=1, nullable=False)
-    winner_side = Field(nullable=True)  # todo: enum, может и не надо
+    winner_side: str = Field(nullable=True)  # todo: enum, может и не надо
+
+
+class FightParticipants(TableBase, table=True):
+    __tablename__ = 'fight_participants'
+
+    fight_id: UUID = Field(index=True, nullable=False, foreign_key='fights.id')
+    character_id: UUID | None = Field(nullable=True, foreign_key='characters.id')
+    mob_id: UUID | None = Field(nullable=True, foreign_key='mobs.id')
+    side: str = Field(nullable=False)  # todo: enum как и в winner_side (team_a/team_b)
 
 
 class FightActions(TableBase, table=True):
+    __tablename__ = 'fight_actions'
+
     fight_id: UUID = Field(index=True, nullable=False, foreign_key='fights.id')
     action_id: UUID = Field(nullable=False, foreign_key='actions.id')
+    initiator_participant_id: UUID = Field(nullable=False, foreign_key='fight_participants.id')
+    target_participant_id: UUID = Field(nullable=True, foreign_key='fight_participants.id')
