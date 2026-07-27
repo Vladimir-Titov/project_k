@@ -48,7 +48,7 @@ async def test_create_validates_dynamic_kwargs_and_returns_entity() -> None:
     assert fight.id == row['id']
     query = repository.fetchrow.await_args.args[0]
     sql, parameters = compile_query(query)
-    assert sql.startswith('INSERT INTO fights')
+    assert sql.startswith('INSERT INTO frontiers.fights')
     assert FightStatus.started in parameters
 
 
@@ -82,7 +82,7 @@ async def test_search_builds_validated_filters_and_ordering() -> None:
     assert 'fights.status IN' in sql
     assert 'fights.created_at >=' in sql
     assert 'fights.winner_side IS NULL' in sql
-    assert 'ORDER BY fights.created_at DESC' in sql
+    assert 'ORDER BY frontiers.fights.created_at DESC' in sql
     assert 'LIMIT' in sql
     assert created_ge in parameters
 

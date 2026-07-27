@@ -5,7 +5,6 @@ from alembic.script import ScriptDirectory
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
-from sqlmodel import SQLModel
 from sqlmodel.sql.sqltypes import AutoString
 
 import app.models.actions
@@ -14,6 +13,8 @@ import app.models.fights  # noqa: F401
 from alembic import context
 from app import models  # noqa: F401
 from app.models.base import UTCDateTime
+from helpers.metadata import get_all_metadata, get_registered_schemas
+from helpers.migration import add_schema_create_operations
 from settings import get_db_config, get_log_config
 from settings.logging import setup_logging
 
@@ -22,7 +23,17 @@ config = context.config
 setup_logging(get_log_config())
 config.set_main_option('sqlalchemy.url', get_db_config().alembic_dsn.replace('%', '%%'))
 
-target_metadata = SQLModel.metadata
+target_metadata = get_all_metadata()
+
+
+def include_name(
+    name: str | None,
+    item_type: str,
+    _parent_names: dict[str, str | None],
+) -> bool:
+    if item_type != 'schema':
+        return True
+    return name is None or name in get_registered_schemas()
 
 
 def next_revision_id() -> str:
@@ -46,9 +57,10 @@ def assign_sequential_revision_id(
     _revision: object,
     directives: list[MigrationScript],
 ) -> None:
-    """Replace Alembic's random revision hash with 0001, 0002, ..."""
+    """Apply project conventions to a newly generated migration."""
     if directives:
         directives[0].rev_id = next_revision_id()
+        add_schema_create_operations(directives)
 
 
 def render_item(item_type: str, item: object, _autogen_context: object) -> str | bool:
@@ -66,6 +78,8 @@ def configure_context(**kwargs: object) -> None:
     context.configure(
         target_metadata=target_metadata,
         compare_type=True,
+        include_schemas=True,
+        include_name=include_name,
         process_revision_directives=assign_sequential_revision_id,
         render_item=render_item,
         **kwargs,

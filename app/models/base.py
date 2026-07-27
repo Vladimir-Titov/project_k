@@ -4,6 +4,8 @@ from uuid import UUID, uuid7
 from sqlalchemy import DateTime, false, func
 from sqlmodel import Field, SQLModel
 
+from helpers.metadata import get_metadata
+
 
 class UTCDateTime(DateTime):
     def __init__(self) -> None:
@@ -15,6 +17,8 @@ def utc_now() -> datetime:
 
 
 class TableBase(SQLModel):
+    metadata = get_metadata()
+
     id: UUID = Field(
         default_factory=uuid7,
         primary_key=True,

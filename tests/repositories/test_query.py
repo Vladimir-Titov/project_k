@@ -10,13 +10,13 @@ def test_compile_query_uses_asyncpg_placeholders_and_parameter_order() -> None:
         Column('id', Integer),
         Column('title', String),
     )
-    query = select(table).where(table.c.title == 'fight').where(table.c.id >= 7)
+    query = select(table).where(table.c.title == 'fights').where(table.c.id >= 7)
 
     sql, parameters = compile_query(query)
 
     assert 'entities.title = $1::VARCHAR' in sql
     assert 'entities.id >= $2::INTEGER' in sql
-    assert parameters == ('fight', 7)
+    assert parameters == ('fights', 7)
 
 
 def test_compile_query_preserves_raw_asyncpg_query() -> None:
