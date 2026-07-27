@@ -1,78 +1,109 @@
-from logging.config import fileConfig
+import asyncio
 
-from sqlalchemy import engine_from_config
+from alembic.operations import MigrationScript
+from alembic.script import ScriptDirectory
 from sqlalchemy import pool
+from sqlalchemy.engine import Connection
+from sqlalchemy.ext.asyncio import async_engine_from_config
+from sqlmodel import SQLModel
+from sqlmodel.sql.sqltypes import AutoString
 
+import app.models.actions
+import app.models.characteristics
+import app.models.fights  # noqa: F401
 from alembic import context
+from app import models  # noqa: F401
+from app.models.base import UTCDateTime
+from settings import get_db_config, get_log_config
+from settings.logging import setup_logging
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
 config = context.config
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+setup_logging(get_log_config())
+config.set_main_option('sqlalchemy.url', get_db_config().alembic_dsn.replace('%', '%%'))
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = SQLModel.metadata
 
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
+
+def next_revision_id() -> str:
+    """Return the next global, zero-padded numeric revision ID."""
+    revisions = ScriptDirectory.from_config(config).walk_revisions()
+    numeric_ids: list[int] = []
+
+    for revision in revisions:
+        if not revision.revision.isdecimal():
+            raise ValueError(
+                f'Alembic revision {revision.revision!r} is not numeric. '
+                'All revisions must use sequential numeric IDs.',
+            )
+        numeric_ids.append(int(revision.revision))
+
+    return f'{max(numeric_ids, default=0) + 1:04d}'
+
+
+def assign_sequential_revision_id(
+    _migration_context: object,
+    _revision: object,
+    directives: list[MigrationScript],
+) -> None:
+    """Replace Alembic's random revision hash with 0001, 0002, ..."""
+    if directives:
+        directives[0].rev_id = next_revision_id()
+
+
+def render_item(item_type: str, item: object, _autogen_context: object) -> str | bool:
+    """Render application types as stable, standalone SQLAlchemy types."""
+    if item_type != 'type':
+        return False
+    if isinstance(item, UTCDateTime):
+        return 'sa.DateTime(timezone=True)'
+    if isinstance(item, AutoString):
+        return 'sa.String()'
+    return False
+
+
+def configure_context(**kwargs: object) -> None:
+    context.configure(
+        target_metadata=target_metadata,
+        compare_type=True,
+        process_revision_directives=assign_sequential_revision_id,
+        render_item=render_item,
+        **kwargs,
+    )
 
 
 def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode.
-
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
-
-    Calls to context.execute() here emit the given string to the
-    script output.
-
-    """
-    url = config.get_main_option("sqlalchemy.url")
-    context.configure(
-        url=url,
-        target_metadata=target_metadata,
+    configure_context(
+        url=config.get_main_option('sqlalchemy.url'),
         literal_binds=True,
-        dialect_opts={"paramstyle": "named"},
+        dialect_opts={'paramstyle': 'named'},
     )
 
     with context.begin_transaction():
         context.run_migrations()
 
 
-def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
+def do_run_migrations(connection: Connection) -> None:
+    configure_context(connection=connection)
 
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
+    with context.begin_transaction():
+        context.run_migrations()
 
-    """
-    connectable = engine_from_config(
+
+async def run_async_migrations() -> None:
+    connectable = async_engine_from_config(
         config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
+        prefix='sqlalchemy.',
         poolclass=pool.NullPool,
     )
 
-    with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+    async with connectable.connect() as connection:
+        await connection.run_sync(do_run_migrations)
 
-        with context.begin_transaction():
-            context.run_migrations()
+    await connectable.dispose()
 
 
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    run_migrations_online()
+    asyncio.run(run_async_migrations())

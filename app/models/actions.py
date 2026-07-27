@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from sqlalchemy import Column, Enum
 from sqlmodel import Field
 

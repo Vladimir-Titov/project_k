@@ -1,4 +1,4 @@
-from sqlalchemy import Enum, Column
+from sqlalchemy import Column, Enum
 from sqlmodel import Field
 
 from app.enums import CharacterClass
@@ -15,7 +15,7 @@ class Character(TableBase, table=True):
         sa_column=Column(
             Enum(
                 CharacterClass,
-                name="character_class",
+                name='character_class',
                 native_enum=False,
                 validate_strings=True,
                 values_callable=lambda enum: [item.value for item in enum],

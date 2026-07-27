@@ -6,6 +6,7 @@ dependencies = [
     "alembic>=1.18.5",
     "asyncpg>=0.31.0",
     "fastapi>=0.139.2",
+    "pydantic-settings>=2.13.1",
     "sqlalchemy>=2.0.51",
     "sqlmodel>=0.0.39",
     "uvicorn>=0.51.0",
@@ -89,6 +90,9 @@ flake8-quotes = {inline-quotes = "single", multiline-quotes = "double", docstrin
 [tool.ruff.format]
 quote-style = "single"
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
 [tool.isort]
 lines_after_imports = 2
 line_length = 120
@@ -107,5 +111,8 @@ default_section = "THIRDPARTY"
 
 [dependency-groups]
 dev = [
+    "httpx2>=2.9.1",
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
     "ruff>=0.15.22",
 ]
