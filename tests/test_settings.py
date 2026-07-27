@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from settings import AppConfig, DbConfig, LogConfig, SentryConfig
+from settings import AppConfig, AuthConfig, DbConfig, LogConfig, SentryConfig
 
 
 def test_app_config_defaults_without_dotenv() -> None:
@@ -62,7 +62,7 @@ def test_db_config_builds_encoded_dsns_and_hides_password() -> None:
 
 @pytest.mark.parametrize(
     'config_type',
-    [AppConfig, DbConfig, LogConfig, SentryConfig],
+    [AppConfig, AuthConfig, DbConfig, LogConfig, SentryConfig],
 )
 def test_unknown_dotenv_values_are_ignored(config_type: type[object], tmp_path: Path) -> None:
     dotenv_path = tmp_path / '.env'
@@ -82,3 +82,17 @@ def test_empty_sentry_dsn_is_disabled_value() -> None:
     config = SentryConfig(_env_file=None, dsn='')
 
     assert config.dsn is None
+
+
+def test_auth_config_hides_signing_secret() -> None:
+    config = AuthConfig(
+        _env_file=None,
+        secret_key='test-secret-key-with-at-least-32-bytes',
+    )
+
+    assert 'test-secret-key-with-at-least-32-bytes' not in repr(config)
+
+
+def test_auth_config_rejects_short_signing_secret() -> None:
+    with pytest.raises(ValidationError):
+        AuthConfig(_env_file=None, secret_key='too-short')

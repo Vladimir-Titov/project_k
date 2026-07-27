@@ -1,7 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from settings import AppConfig, DbConfig, LogConfig, get_app_config, get_db_config, get_log_config
+from settings import (
+    AppConfig,
+    AuthConfig,
+    DbConfig,
+    LogConfig,
+    get_app_config,
+    get_auth_config,
+    get_db_config,
+    get_log_config,
+)
 from settings.logging import setup_logging
 from web.api import create_api_router
 from web.lifespans import create_lifespan
@@ -9,10 +18,12 @@ from web.lifespans import create_lifespan
 
 def create_app(
     app_config: AppConfig | None = None,
+    auth_config: AuthConfig | None = None,
     db_config: DbConfig | None = None,
     log_config: LogConfig | None = None,
 ) -> FastAPI:
     resolved_app_config = app_config or get_app_config()
+    resolved_auth_config = auth_config or get_auth_config()
     resolved_db_config = db_config or get_db_config()
     resolved_log_config = log_config or get_log_config()
     setup_logging(resolved_log_config)
@@ -23,7 +34,7 @@ def create_app(
         docs_url='/docs' if resolved_app_config.docs_enabled else None,
         redoc_url='/redoc' if resolved_app_config.docs_enabled else None,
         openapi_url='/openapi.json' if resolved_app_config.docs_enabled else None,
-        lifespan=create_lifespan(resolved_db_config),
+        lifespan=create_lifespan(resolved_db_config, resolved_auth_config),
     )
     application.add_middleware(
         CORSMiddleware,

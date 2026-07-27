@@ -23,12 +23,14 @@ def test_lifespan_exposes_pool_and_closes_it(monkeypatch: object) -> None:
     with TestClient(application) as client:
         assert client.app.state.db_pool is pool
         assert client.app.state.repositories.pool is pool
+        assert client.app.state.services.repositories is client.app.state.repositories
         assert client.get('/').json() == {'message': 'Hello World'}
 
     create_pool.assert_awaited_once_with(db_config)
     close_pool.assert_awaited_once_with(pool, 3)
     assert not hasattr(application.state, 'db_pool')
     assert not hasattr(application.state, 'repositories')
+    assert not hasattr(application.state, 'services')
 
 
 def test_cors_wildcard_preflight(monkeypatch: object) -> None:
