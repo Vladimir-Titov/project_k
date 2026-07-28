@@ -1,14 +1,26 @@
+from typing import TYPE_CHECKING, Any
+from uuid import UUID
+
 from sqlalchemy import Column, Enum
-from sqlmodel import Field
+from sqlmodel import Field, Relationship
 
 from app.enums import CharacterClass
 from app.models.base import TableBase
+
+if TYPE_CHECKING:
+    from app.models.accounts import Account
+    from app.models.fights import FightParticipants
 
 
 class Character(TableBase, table=True):
     __tablename__ = 'characters'
 
-    account_id: str = Field(index=True, nullable=False)
+    account_id: UUID = Field(
+        index=True,
+        unique=True,
+        nullable=False,
+        foreign_key='frontiers.account.id',
+    )
     nickname: str = Field(index=True, unique=True, nullable=False)
     character_class: CharacterClass = Field(
         default=CharacterClass.ADVENTURER,
@@ -23,3 +35,10 @@ class Character(TableBase, table=True):
             nullable=False,
         ),
     )
+    account: Account = Relationship(back_populates='character')
+    fight_participations: list[FightParticipants] = Relationship(
+        back_populates='character',
+    )
+
+    def __admin_repr__(self, _request: Any) -> str:
+        return self.nickname

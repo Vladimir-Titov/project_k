@@ -3,7 +3,14 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from settings import AppConfig, AuthConfig, DbConfig, LogConfig, SentryConfig
+from settings import (
+    AdminPanelConfig,
+    AppConfig,
+    AuthConfig,
+    DbConfig,
+    LogConfig,
+    SentryConfig,
+)
 
 
 def test_app_config_defaults_without_dotenv() -> None:
@@ -62,7 +69,7 @@ def test_db_config_builds_encoded_dsns_and_hides_password() -> None:
 
 @pytest.mark.parametrize(
     'config_type',
-    [AppConfig, AuthConfig, DbConfig, LogConfig, SentryConfig],
+    [AdminPanelConfig, AppConfig, AuthConfig, DbConfig, LogConfig, SentryConfig],
 )
 def test_unknown_dotenv_values_are_ignored(config_type: type[object], tmp_path: Path) -> None:
     dotenv_path = tmp_path / '.env'
@@ -96,3 +103,15 @@ def test_auth_config_hides_signing_secret() -> None:
 def test_auth_config_rejects_short_signing_secret() -> None:
     with pytest.raises(ValidationError):
         AuthConfig(_env_file=None, secret_key='too-short')
+
+
+def test_admin_config_hides_credentials() -> None:
+    config = AdminPanelConfig(
+        _env_file=None,
+        password='staff-password',
+        session_secret='test-admin-session-secret-at-least-32-bytes',
+    )
+
+    representation = repr(config)
+    assert 'staff-password' not in representation
+    assert 'test-admin-session-secret-at-least-32-bytes' not in representation

@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 from app.enums.fights import FightStatus
 from app.models.fights import Fight
-from settings import AppConfig, AuthConfig, DbConfig, LogConfig
+from settings import AdminPanelConfig, AppConfig, AuthConfig, DbConfig, LogConfig
 from web.create_app import create_app
 from web.lifespans import db
 
@@ -16,6 +16,7 @@ def test_authentication_refresh_and_protected_fight_endpoint(monkeypatch: object
     monkeypatch.setattr(db, 'close_db_pool', AsyncMock())
     application = create_app(
         app_config=AppConfig(_env_file=None),
+        admin_config=AdminPanelConfig(_env_file=None, enabled=False),
         auth_config=AuthConfig(
             _env_file=None,
             secret_key='test-secret-key-with-at-least-32-bytes',

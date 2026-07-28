@@ -1,10 +1,16 @@
 from functools import lru_cache
 
+from settings.admin import AdminPanelConfig
 from settings.app import AppConfig
 from settings.auth import AuthConfig
 from settings.db import DbConfig
 from settings.logging import LogConfig
 from settings.sentry import SentryConfig
+
+
+@lru_cache
+def get_admin_panel_config() -> AdminPanelConfig:
+    return AdminPanelConfig()
 
 
 @lru_cache
@@ -33,11 +39,13 @@ def get_sentry_config() -> SentryConfig:
 
 
 __all__ = [
+    'AdminPanelConfig',
     'AppConfig',
     'AuthConfig',
     'DbConfig',
     'LogConfig',
     'SentryConfig',
+    'get_admin_panel_config',
     'get_app_config',
     'get_auth_config',
     'get_db_config',

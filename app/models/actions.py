@@ -1,9 +1,14 @@
+from typing import TYPE_CHECKING, Any
+
 from sqlalchemy import Column, Enum
-from sqlmodel import Field
+from sqlmodel import Field, Relationship
 
 from app.enums.actions import ActionsType
-from app.enums.fights import FightStatus
 from app.models.base import TableBase
+
+if TYPE_CHECKING:
+    from app.models.characteristics_actions import CharacteristicsActions
+    from app.models.fights import FightActions
 
 
 class Actions(TableBase, table=True):
@@ -16,7 +21,7 @@ class Actions(TableBase, table=True):
     type: ActionsType = Field(
         sa_column=Column(
             Enum(
-                FightStatus,
+                ActionsType,
                 name='actions_type',
                 native_enum=False,
                 validate_strings=True,
@@ -25,3 +30,10 @@ class Actions(TableBase, table=True):
             nullable=False,
         ),
     )
+    characteristic_links: list[CharacteristicsActions] = Relationship(
+        back_populates='action',
+    )
+    fight_actions: list[FightActions] = Relationship(back_populates='action')
+
+    def __admin_repr__(self, _request: Any) -> str:
+        return self.title
