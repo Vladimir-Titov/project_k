@@ -5,16 +5,16 @@ import pytest
 
 from app.enums.fights import FightStatus
 from app.models.fights import Fight
-from app.services import Services
+from app.services import FightService
 
 
 @pytest.mark.asyncio
 async def test_create_fight_delegates_entity_creation_to_repository() -> None:
     repositories = Mock()
     repositories.fights.create = AsyncMock(return_value=Fight(status=FightStatus.started))
-    services = Services(repositories, Mock())
+    service = FightService(repositories)
 
-    fight = await services.create_fight(
+    fight = await service.create_fight(
         attacker_id=uuid7(),
         target_id=uuid7(),
     )

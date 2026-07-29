@@ -1,5 +1,5 @@
 from repositories.base import BaseRepository
-from repositories.container import Repositories, RepositoryContainer, RepositoryDescriptor
+from repositories.container import Repositories, RepositoryContainer
 from repositories.entity import EntityRepository
 
 __all__ = [
@@ -7,5 +7,4 @@ __all__ = [
     'EntityRepository',
     'Repositories',
     'RepositoryContainer',
-    'RepositoryDescriptor',
 ]

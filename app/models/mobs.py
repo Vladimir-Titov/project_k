@@ -11,10 +11,10 @@ if TYPE_CHECKING:
 class Mob(TableBase, table=True):
     __tablename__ = 'mobs'
 
-    name: str = Field(index=True, nullable=False)
+    title: str = Field(index=True, nullable=False)
     fight_participations: list[FightParticipants] = Relationship(
         back_populates='mob',
     )
 
     def __admin_repr__(self, _request: Any) -> str:
-        return self.name
+        return self.title

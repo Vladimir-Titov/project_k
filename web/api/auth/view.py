@@ -2,9 +2,9 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.services import InvalidTokenError, Services
+from app.services import AuthService, InvalidTokenError
 from web.api.auth.schema import LoginRequest, RefreshRequest, TokenPairResponse
-from web.api.dependencies import get_services
+from web.api.dependencies import get_auth_service
 
 router = APIRouter(prefix='/api/v1/auth', tags=['auth'])
 
@@ -12,9 +12,9 @@ router = APIRouter(prefix='/api/v1/auth', tags=['auth'])
 @router.post('/login', response_model=TokenPairResponse)
 async def login(
     payload: LoginRequest,
-    services: Annotated[Services, Depends(get_services)],
+    auth_service: Annotated[AuthService, Depends(get_auth_service)],
 ) -> TokenPairResponse:
-    token_pair = services.auth.login(
+    token_pair = auth_service.login(
         payload.login,
         payload.password.get_secret_value(),
     )
@@ -24,10 +24,10 @@ async def login(
 @router.post('/refresh', response_model=TokenPairResponse)
 async def refresh(
     payload: RefreshRequest,
-    services: Annotated[Services, Depends(get_services)],
+    auth_service: Annotated[AuthService, Depends(get_auth_service)],
 ) -> TokenPairResponse:
     try:
-        token_pair = services.auth.refresh(payload.refresh_token)
+        token_pair = auth_service.refresh(payload.refresh_token)
     except InvalidTokenError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

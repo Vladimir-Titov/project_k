@@ -1,16 +1,19 @@
 import pytest
 
 from repositories import Repositories
+from repositories.fights.repository import CharacterRepository, FightRepository, MobRepository
 from tests.repositories.fakes import FakeConnection, FakePool
 
 
-def test_descriptor_returns_and_caches_typed_repository() -> None:
+def test_properties_return_and_cache_typed_repositories() -> None:
     repositories = Repositories(FakePool(FakeConnection()))
 
-    first = repositories.fights
-    second = repositories.fights
-
-    assert first is second
+    assert isinstance(repositories.fights, FightRepository)
+    assert isinstance(repositories.characters, CharacterRepository)
+    assert isinstance(repositories.mobs, MobRepository)
+    assert repositories.fights is repositories.fights
+    assert repositories.characters is repositories.characters
+    assert repositories.mobs is repositories.mobs
 
 
 @pytest.mark.asyncio

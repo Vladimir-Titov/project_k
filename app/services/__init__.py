@@ -1,4 +1,4 @@
 from app.services.auth import AuthService, InvalidTokenError, TokenPair, UserTokenPayload
-from app.services.container import Services
+from app.services.fights import FightService
 
-__all__ = ['AuthService', 'InvalidTokenError', 'Services', 'TokenPair', 'UserTokenPayload']
+__all__ = ['AuthService', 'FightService', 'InvalidTokenError', 'TokenPair', 'UserTokenPayload']

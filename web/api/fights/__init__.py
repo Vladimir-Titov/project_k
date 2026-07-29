@@ -1,3 +1,3 @@
-from web.api.fights.view import router
+from web.api.fights.views import router
 
 __all__ = ['router']

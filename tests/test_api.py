@@ -56,8 +56,8 @@ def test_authentication_refresh_and_protected_fight_endpoint(monkeypatch: object
         assert wrong_token_response.status_code == 401
 
         expected_fight = Fight(status=FightStatus.started)
-        application.state.services.create_fight = AsyncMock(return_value=expected_fight)
-        token_payload = application.state.services.auth.authenticate_access_token(tokens['access_token'])
+        application.state.fight_service.create_fight = AsyncMock(return_value=expected_fight)
+        token_payload = application.state.auth_service.authenticate_access_token(tokens['access_token'])
         response = client.post(
             '/api/v1/fights',
             headers={'Authorization': f'Bearer {tokens["access_token"]}'},
@@ -66,7 +66,7 @@ def test_authentication_refresh_and_protected_fight_endpoint(monkeypatch: object
 
         assert response.status_code == 201
         assert response.json()['id'] == str(expected_fight.id)
-        application.state.services.create_fight.assert_awaited_once_with(
+        application.state.fight_service.create_fight.assert_awaited_once_with(
             attacker_id=token_payload.character_id,
             target_id=target_id,
         )

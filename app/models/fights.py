@@ -45,9 +45,10 @@ class Fight(TableBase, table=True):
     )
     participants: list[FightParticipants] = Relationship(back_populates='fight')
     actions: list[FightActions] = Relationship(back_populates='fight')
+    title: str = Field(nullable=False)
 
     def __admin_repr__(self, _request: Any) -> str:
-        return f'{self.id} ({self.status})'
+        return f'{self.title} ({self.status} {self.id})'
 
 
 class FightParticipants(TableBase, table=True):

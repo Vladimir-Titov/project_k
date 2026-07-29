@@ -1,32 +1,11 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any, ClassVar, Self, overload
+from typing import Self
 
 import asyncpg
 
 from repositories.base import BaseRepository
-from repositories.fights.repository import FightRepository
-
-
-class RepositoryDescriptor[RepositoryT: BaseRepository]:
-    def __init__(self, repository_type: type[RepositoryT]) -> None:
-        self.repository_type = repository_type
-
-    @overload
-    def __get__(self, instance: None, owner: type[Any]) -> RepositoryDescriptor[RepositoryT]: ...
-
-    @overload
-    def __get__(self, instance: RepositoryContainer, owner: type[Any]) -> RepositoryT: ...
-
-    def __get__(
-        self,
-        instance: RepositoryContainer | None,
-        owner: type[Any],
-    ) -> RepositoryDescriptor[RepositoryT] | RepositoryT:
-        del owner
-        if instance is None:
-            return self
-        return instance.get_repository(self.repository_type)
+from repositories.fights.repository import CharacterRepository, FightRepository, MobRepository
 
 
 class RepositoryContainer:
@@ -61,4 +40,14 @@ class RepositoryContainer:
 
 
 class Repositories(RepositoryContainer):
-    fights: ClassVar[RepositoryDescriptor[FightRepository]] = RepositoryDescriptor(FightRepository)
+    @property
+    def fights(self) -> FightRepository:
+        return self.get_repository(FightRepository)
+
+    @property
+    def characters(self) -> CharacterRepository:
+        return self.get_repository(CharacterRepository)
+
+    @property
+    def mobs(self) -> MobRepository:
+        return self.get_repository(MobRepository)
