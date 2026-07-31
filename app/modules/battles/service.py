@@ -14,7 +14,6 @@ class FightService:
 
     async def create_fight(
         self,
-        *,
         attacker_id: UUID,
         target_id: UUID,
     ) -> Fight:
