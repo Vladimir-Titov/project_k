@@ -1,15 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, Depends, Request, Response, status
 
 from app.api.dependencies import (
     get_auth_service,
     get_current_account_token_payload,
-)
-from app.modules.auth.exceptions import (
-    InvalidCredentialsError,
-    InvalidTokenError,
-    LoginAlreadyExistsError,
 )
 from app.modules.auth.schemas import (
     LoginRequest,
@@ -32,18 +27,12 @@ async def register(
     request: Request,
     auth_service: Annotated[AuthService, Depends(get_auth_service)],
 ) -> TokenPairResponse:
-    try:
-        token_pair = await auth_service.register(
-            payload.login,
-            payload.password.get_secret_value(),
-            ip_address=request.client.host if request.client is not None else None,
-            user_agent=request.headers.get('user-agent'),
-        )
-    except LoginAlreadyExistsError:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail='User with this login already exists',
-        )
+    token_pair = await auth_service.register(
+        payload.login,
+        payload.password.get_secret_value(),
+        ip_address=request.client.host if request.client is not None else None,
+        user_agent=request.headers.get('user-agent'),
+    )
     return TokenPairResponse.from_token_pair(token_pair)
 
 
@@ -53,18 +42,12 @@ async def login(
     request: Request,
     auth_service: Annotated[AuthService, Depends(get_auth_service)],
 ) -> TokenPairResponse:
-    try:
-        token_pair = await auth_service.login(
-            payload.login,
-            payload.password.get_secret_value(),
-            ip_address=request.client.host if request.client is not None else None,
-            user_agent=request.headers.get('user-agent'),
-        )
-    except InvalidCredentialsError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Incorrect login or password',
-        )
+    token_pair = await auth_service.login(
+        payload.login,
+        payload.password.get_secret_value(),
+        ip_address=request.client.host if request.client is not None else None,
+        user_agent=request.headers.get('user-agent'),
+    )
     return TokenPairResponse.from_token_pair(token_pair)
 
 
@@ -73,13 +56,7 @@ async def refresh(
     payload: RefreshRequest,
     auth_service: Annotated[AuthService, Depends(get_auth_service)],
 ) -> TokenPairResponse:
-    try:
-        token_pair = await auth_service.refresh(payload.refresh_token)
-    except InvalidTokenError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Invalid or expired refresh token',
-        )
+    token_pair = await auth_service.refresh(payload.refresh_token)
     return TokenPairResponse.from_token_pair(token_pair)
 
 

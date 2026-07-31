@@ -1,32 +1,18 @@
-from datetime import UTC, datetime, timedelta
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 from uuid import uuid7
 
 import pytest
 
-from app.modules.auth.models import Account, Session
 from app.modules.battles.enums import FightSide, FightStatus
+from app.modules.battles.exceptions import FightTargetNotFoundError
 from app.modules.battles.models import Fight
 from app.modules.battles.service import FightService
-from app.modules.characters.exceptions import (
-    CharacterRequiredError,
-    InvalidGameSessionError,
-)
 from tests.modules.auth.fakes import FakeAuthRepositories
 
 
-def build_repositories() -> tuple[FakeAuthRepositories, Account, Session]:
-    account = Account(login='hero', password_hash='hash')
-    character_id = uuid7()
-    repositories = FakeAuthRepositories(account, character_id)
-    session = Session(
-        account_id=account.id,
-        active_character_id=character_id,
-        refresh_token_hash='hash',
-        expires_at=datetime.now(UTC) + timedelta(days=1),
-    )
-    repositories.sessions.sessions[session.id] = session
+def build_service() -> tuple[FightService, FakeAuthRepositories]:
+    repositories = FakeAuthRepositories(None, uuid7())
     repositories.fights = SimpleNamespace(
         create=AsyncMock(
             return_value=Fight(
@@ -38,34 +24,29 @@ def build_repositories() -> tuple[FakeAuthRepositories, Account, Session]:
     repositories.mobs = SimpleNamespace(
         get_by_id=AsyncMock(return_value=SimpleNamespace(title='Target')),
     )
-    repositories.fight_participants = SimpleNamespace(
-        create_many=AsyncMock(),
-    )
-    return repositories, account, session
+    repositories.fight_participants = SimpleNamespace(create_many=AsyncMock())
+    return FightService(repositories), repositories  # type: ignore[arg-type]
 
 
 @pytest.mark.asyncio
-async def test_create_fight_uses_character_from_server_session() -> None:
-    repositories, account, session = build_repositories()
+async def test_create_fight_uses_resolved_attacker_context() -> None:
+    service, repositories = build_service()
+    attacker_id = uuid7()
     target_id = uuid7()
-    service = FightService(repositories)  # type: ignore[arg-type]
 
     fight = await service.create_fight(
-        account_id=account.id,
-        session_id=session.id,
+        attacker_id=attacker_id,
         target_id=target_id,
     )
 
-    assert fight.status is FightStatus.started
     repositories.fights.create.assert_awaited_once_with(
         status=FightStatus.started,
         title='Нападение на Target',
     )
-    participants = repositories.fight_participants.create_many.await_args.args[0]
-    assert participants == [
+    assert repositories.fight_participants.create_many.await_args.args[0] == [
         {
             'fight_id': fight.id,
-            'character_id': session.active_character_id,
+            'character_id': attacker_id,
             'side': FightSide.team_a,
         },
         {
@@ -77,62 +58,12 @@ async def test_create_fight_uses_character_from_server_session() -> None:
 
 
 @pytest.mark.asyncio
-async def test_create_fight_requires_active_character() -> None:
-    repositories, account, session = build_repositories()
-    session.active_character_id = None
-    service = FightService(repositories)  # type: ignore[arg-type]
+async def test_create_fight_rejects_missing_target_with_typed_error() -> None:
+    service, repositories = build_service()
+    repositories.mobs.get_by_id.return_value = None
 
-    with pytest.raises(CharacterRequiredError):
+    with pytest.raises(FightTargetNotFoundError):
         await service.create_fight(
-            account_id=account.id,
-            session_id=session.id,
-            target_id=uuid7(),
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_fight_rejects_character_owned_by_other_account() -> None:
-    repositories, account, session = build_repositories()
-    other_account = Account(login='other', password_hash='hash')
-    other_character = await repositories.characters.create_if_available(
-        account_id=other_account.id,
-        nickname='OtherHero',
-    )
-    assert other_character is not None
-    session.active_character_id = other_character.id
-    service = FightService(repositories)  # type: ignore[arg-type]
-
-    with pytest.raises(CharacterRequiredError):
-        await service.create_fight(
-            account_id=account.id,
-            session_id=session.id,
-            target_id=uuid7(),
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_fight_requires_existing_server_session() -> None:
-    repositories, account, session = build_repositories()
-    repositories.sessions.sessions.clear()
-    service = FightService(repositories)  # type: ignore[arg-type]
-
-    with pytest.raises(InvalidGameSessionError):
-        await service.create_fight(
-            account_id=account.id,
-            session_id=session.id,
-            target_id=uuid7(),
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_fight_rejects_expired_server_session() -> None:
-    repositories, account, session = build_repositories()
-    session.expires_at = datetime.now(UTC) - timedelta(seconds=1)
-    service = FightService(repositories)  # type: ignore[arg-type]
-
-    with pytest.raises(InvalidGameSessionError):
-        await service.create_fight(
-            account_id=account.id,
-            session_id=session.id,
+            attacker_id=uuid7(),
             target_id=uuid7(),
         )

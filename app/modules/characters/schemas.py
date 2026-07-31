@@ -3,7 +3,7 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.modules.characters.enums import CharacterClass
-from app.modules.characters.service import CharacterSelection
+from app.modules.characters.models import Character
 
 
 class CreateCharacterRequest(BaseModel):
@@ -19,13 +19,15 @@ class CharacterResponse(BaseModel):
     is_active: bool
 
     @classmethod
-    def from_selection(
+    def from_character(
         cls,
-        selection: CharacterSelection,
+        character: Character,
+        *,
+        is_active: bool,
     ) -> CharacterResponse:
         return cls(
-            id=selection.character.id,
-            nickname=selection.character.nickname,
-            character_class=selection.character.character_class,
-            is_active=selection.is_active,
+            id=character.id,
+            nickname=character.nickname,
+            character_class=character.character_class,
+            is_active=is_active,
         )

@@ -133,6 +133,7 @@ class FakeCharacterRepository:
 class FakeSessionRepository:
     def __init__(self) -> None:
         self.sessions: dict[UUID, Session] = {}
+        self.for_update_values: list[bool] = []
 
     async def create_session(self, session: Session) -> Session:
         self.sessions[session.id] = session
@@ -145,7 +146,7 @@ class FakeSessionRepository:
         account_id: UUID,
         for_update: bool = False,
     ) -> Session | None:
-        del for_update
+        self.for_update_values.append(for_update)
         session = self.sessions.get(session_id)
         if (
             session is None
@@ -199,8 +200,15 @@ class FakeAuthRepositories:
         self.characters = FakeCharacterRepository(character)
         self.sessions = FakeSessionRepository()
         self._transaction_lock = asyncio.Lock()
+        self.transaction_entries = 0
+        self.transaction_failures: list[type[Exception]] = []
 
     @asynccontextmanager
     async def transaction(self) -> Self:
         async with self._transaction_lock:
-            yield self
+            self.transaction_entries += 1
+            try:
+                yield self
+            except Exception as error:
+                self.transaction_failures.append(type(error))
+                raise

@@ -157,7 +157,7 @@ async def test_concurrent_registration_allows_only_one_login() -> None:
 
 
 @pytest.mark.asyncio
-async def test_login_creates_session_and_issues_complete_token_pair() -> None:
+async def test_login_creates_session_without_selecting_character() -> None:
     service, repositories = await auth_service()
 
     tokens = await service.login(
@@ -188,7 +188,7 @@ async def test_login_creates_session_and_issues_complete_token_pair() -> None:
     assert tokens.expires_in == 3 * 24 * 60 * 60
     assert session.ip_address == '127.0.0.1'
     assert session.user_agent == 'test-agent'
-    assert session.active_character_id is not None
+    assert session.active_character_id is None
     assert session.refresh_token_hash not in tokens.refresh_token
 
 

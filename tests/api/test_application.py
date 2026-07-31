@@ -24,9 +24,9 @@ def test_lifespan_exposes_pool_and_closes_it(monkeypatch: object) -> None:
     with TestClient(application) as client:
         assert client.app.state.db_pool is pool
         assert client.app.state.repositories.pool is pool
-        assert client.app.state.fight_service.repositories is client.app.state.repositories
         assert client.app.state.auth_service is not None
-        assert client.app.state.character_service is not None
+        assert not hasattr(client.app.state, 'fight_service')
+        assert not hasattr(client.app.state, 'character_service')
         assert client.get('/').json() == {'message': 'Hello World'}
 
     create_pool.assert_awaited_once_with(db_config)

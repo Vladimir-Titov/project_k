@@ -10,7 +10,13 @@ import jwt
 
 from app.container import Repositories
 from app.core.config import AuthConfig
-from app.modules.auth.exceptions import InvalidCredentialsError, InvalidTokenError, LoginAlreadyExistsError
+from app.modules.auth.exceptions import (
+    InvalidAccessTokenError,
+    InvalidCredentialsError,
+    InvalidRefreshTokenError,
+    InvalidTokenError,
+    LoginAlreadyExistsError,
+)
 from app.modules.auth.models import Session
 from app.modules.auth.passwords import PasswordHasher
 
@@ -72,7 +78,6 @@ class AuthService:
             return await self._create_session_token_pair(
                 repositories=repositories,
                 account_id=account.id,
-                active_character_id=None,
                 ip_address=ip_address,
                 user_agent=user_agent,
             )
@@ -94,13 +99,9 @@ class AuthService:
         ):
             raise InvalidCredentialsError
 
-        character = await self.repositories.characters.get_active_by_account_id(
-            account.id,
-        )
         return await self._create_session_token_pair(
             repositories=self.repositories,
             account_id=account.id,
-            active_character_id=character.id if character is not None else None,
             ip_address=ip_address,
             user_agent=user_agent,
         )
@@ -110,14 +111,13 @@ class AuthService:
         *,
         repositories: Repositories,
         account_id: UUID,
-        active_character_id: UUID | None,
         ip_address: str | None,
         user_agent: str | None,
     ) -> TokenPair:
         now = datetime.now(UTC)
         session = Session(
             account_id=account_id,
-            active_character_id=active_character_id,
+            active_character_id=None,
             refresh_token_hash='',
             ip_address=ip_address,
             user_agent=user_agent,
@@ -136,7 +136,10 @@ class AuthService:
         return token_pair
 
     async def refresh(self, refresh_token: str) -> TokenPair:
-        claims = self._decode_claims(refresh_token, TokenType.REFRESH)
+        try:
+            claims = self._decode_claims(refresh_token, TokenType.REFRESH)
+        except InvalidTokenError as error:
+            raise InvalidRefreshTokenError('Invalid or expired token') from error
         now = datetime.now(UTC)
 
         async with self.repositories.transaction() as repositories:
@@ -144,7 +147,7 @@ class AuthService:
                 claims.session_id,
             )
             if session is None:
-                raise InvalidTokenError('Invalid or expired token')
+                raise InvalidRefreshTokenError('Invalid or expired token')
 
             valid_session = (
                 session.account_id == claims.account_id
@@ -155,7 +158,7 @@ class AuthService:
                 )
             )
             if not valid_session:
-                raise InvalidTokenError('Invalid or expired token')
+                raise InvalidRefreshTokenError('Invalid or expired token')
 
             token_pair = self._create_token_pair(
                 account_id=session.account_id,
@@ -176,7 +179,10 @@ class AuthService:
         self,
         access_token: str,
     ) -> AccountTokenPayload:
-        claims = self._decode_claims(access_token, TokenType.ACCESS)
+        try:
+            claims = self._decode_claims(access_token, TokenType.ACCESS)
+        except InvalidTokenError as error:
+            raise InvalidAccessTokenError('Invalid or expired token') from error
         return AccountTokenPayload(
             account_id=claims.account_id,
             session_id=claims.session_id,
