@@ -1,0 +1,1 @@
+"""Reusable game-content definitions."""

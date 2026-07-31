@@ -7,16 +7,17 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlmodel.sql.sqltypes import AutoString
 
-import app.models.actions
-import app.models.characteristics
-import app.models.fights  # noqa: F401
+import app.modules.auth.models  # noqa: F401
+import app.modules.battles.models  # noqa: F401
+import app.modules.characters.models  # noqa: F401
+import app.modules.content.models  # noqa: F401
+import app.modules.monsters.models  # noqa: F401
 from alembic import context
-from app import models  # noqa: F401
-from app.models.base import UTCDateTime
-from helpers.metadata import get_all_metadata, get_registered_schemas
-from helpers.migration import add_schema_create_operations
-from settings import get_db_config, get_log_config
-from settings.logging import setup_logging
+from app.core.config import get_db_config, get_log_config
+from app.core.config.logging import setup_logging
+from app.core.db.metadata import get_all_metadata, get_registered_schemas
+from app.core.db.migration import add_schema_create_operations
+from app.core.db.models import UTCDateTime
 
 config = context.config
 
