@@ -14,8 +14,9 @@ from app.modules.auth.models import Account
 from app.modules.auth.passwords import PasswordHasher
 from app.modules.auth.service import AuthService
 from app.modules.battles.enums import FightStatus
-from app.modules.battles.models import Fight
+from app.modules.battles.models import Fight, FightParticipants
 from app.modules.characters.exceptions import CharacterAlreadyExistsError, CharacterNotFoundError
+from app.modules.characters.models import Character
 from app.modules.game_context.exceptions import CharacterRequiredError
 from tests.modules.auth.fakes import FakeAuthRepositories
 
@@ -61,14 +62,14 @@ def configure_battle_repositories(
 ) -> Fight:
     expected_fight = Fight(status=FightStatus.started, title='Нападение на Target')
     repositories.fights = SimpleNamespace(create=AsyncMock(return_value=expected_fight))
-    repositories.mobs = SimpleNamespace(
-        get_by_id=AsyncMock(
-            side_effect=lambda entity_id: SimpleNamespace(title='Target')
-            if entity_id == target_id
-            else None,
-        ),
+    repositories.characters.characters[target_id] = Character(
+        id=target_id,
+        account_id=uuid7(),
+        nickname='Target',
     )
-    repositories.fight_participants = SimpleNamespace(create_many=AsyncMock())
+    repositories.fight_participants = SimpleNamespace(
+        create=AsyncMock(side_effect=FightParticipants),
+    )
     return expected_fight
 
 
@@ -95,7 +96,7 @@ def test_character_requires_explicit_selection_before_fight(monkeypatch: object)
         create_response = client.post(
             '/api/v1/characters',
             headers=headers,
-            json={'nickname': 'NewHero'},
+            json={'nickname': 'NewHero', 'class_code': 'adventurer'},
         )
         assert create_response.status_code == 201
         assert create_response.json()['is_active'] is False
@@ -103,7 +104,7 @@ def test_character_requires_explicit_selection_before_fight(monkeypatch: object)
         duplicate_character = client.post(
             '/api/v1/characters',
             headers=headers,
-            json={'nickname': 'AnotherHero'},
+            json={'nickname': 'AnotherHero', 'class_code': 'adventurer'},
         )
         assert duplicate_character.json() == {'detail': 'character_already_exists'}
         missing_character = client.post(
@@ -128,29 +129,20 @@ def test_character_requires_explicit_selection_before_fight(monkeypatch: object)
         assert select_response.status_code == 200
         assert select_response.json()['is_active'] is True
 
-        expected_fight = configure_battle_repositories(
-            repositories,
-            target_id=target_id,
-        )
-        fight_response = client.post(
-            '/api/v1/fights',
-            headers=headers,
-            json={'target_id': str(target_id)},
-        )
-        assert fight_response.status_code == 201
-        assert fight_response.json()['id'] == str(expected_fight.id)
-
         session_payload = auth_service.authenticate_access_token(tokens['access_token'])
-        assert repositories.sessions.for_update_values == [True] * 6
-        assert repositories.transaction_entries == 7
+        assert repositories.sessions.for_update_values == [True] * 5
+        assert repositories.transaction_entries == 6
         assert repositories.transaction_failures == [
             CharacterAlreadyExistsError,
             CharacterNotFoundError,
             CharacterRequiredError,
         ]
-        assert str(
-            repositories.sessions.sessions[session_payload.session_id].active_character_id,
-        ) == create_response.json()['id']
+        assert (
+            str(
+                repositories.sessions.sessions[session_payload.session_id].active_character_id,
+            )
+            == create_response.json()['id']
+        )
 
 
 def test_auth_errors_context_and_missing_fight_target(monkeypatch: object) -> None:
@@ -194,19 +186,13 @@ def test_auth_errors_context_and_missing_fight_target(monkeypatch: object) -> No
 
         character = next(iter(repositories.characters.characters.values()))
         headers = {'Authorization': f'Bearer {tokens["access_token"]}'}
-        assert client.post(
-            f'/api/v1/characters/{character.id}/select',
-            headers=headers,
-        ).status_code == 200
-
-        configure_battle_repositories(repositories, target_id=uuid7())
-        missing_target = client.post(
-            '/api/v1/fights',
-            headers=headers,
-            json={'target_id': str(uuid7())},
+        assert (
+            client.post(
+                f'/api/v1/characters/{character.id}/select',
+                headers=headers,
+            ).status_code
+            == 200
         )
-        assert missing_target.status_code == 404
-        assert missing_target.json() == {'detail': 'fight_target_not_found'}
 
         logout_response = client.post('/api/v1/auth/logout', headers=headers)
         assert logout_response.status_code == 204

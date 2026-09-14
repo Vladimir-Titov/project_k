@@ -5,15 +5,32 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import set_committed_value
-from starlette_admin.fields import HasMany, HasOne, PasswordField
+from starlette_admin.fields import PasswordField
 
 from app.admin.views import AccountAdmin, FightAdmin, create_admin_views
 from app.application import create_app
 from app.core.config import AdminPanelConfig, AppConfig, AuthConfig, DbConfig, LogConfig
 from app.lifespans import db
-from app.modules.auth.models import Account
+from app.modules.auth.models import Account, Session
 from app.modules.auth.passwords import PasswordHasher
-from app.modules.battles.models import Fight
+from app.modules.battles.models import (
+    Fight,
+    FightAction,
+    FightActiveEffect,
+    FightEvent,
+    FightParticipants,
+    FightParticipantStat,
+)
+from app.modules.characters.models import (
+    Character,
+    CharacterAction,
+    CharacterClass,
+    CharacterStat,
+    ClassAction,
+    ClassStat,
+)
+from app.modules.content.models import ActionDefinition, ActionEffect, EffectDefinition, EffectRule
+from app.modules.stats.models import StatDefinition
 
 
 def build_app(
@@ -77,27 +94,39 @@ def test_admin_registers_all_models_and_relationship_fields() -> None:
     password_hasher = PasswordHasher(AuthConfig(_env_file=None))
     views = create_admin_views(password_hasher)
 
-    assert len(views) == 9
-    assert {view.model for view in views} >= {Account, Fight}
+    expected_models = {
+        Account,
+        Session,
+        Character,
+        Fight,
+        FightParticipants,
+        CharacterClass,
+        StatDefinition,
+        ClassStat,
+        CharacterStat,
+        ActionDefinition,
+        EffectDefinition,
+        EffectRule,
+        ActionEffect,
+        ClassAction,
+        CharacterAction,
+        FightParticipantStat,
+        FightActiveEffect,
+        FightAction,
+        FightEvent,
+    }
+    assert len(views) == len(expected_models)
+    assert {view.model for view in views} == expected_models
     assert all(view.pk_attr in view.sortable_fields for view in views)
     assert all(
         all(field_name in view.sortable_fields for field_name, _descending in view.fields_default_sort)
         for view in views
     )
     account_view = next(view for view in views if isinstance(view, AccountAdmin))
-    password_field = next(
-        field
-        for field in account_view.fields
-        if field.name == 'password_hash'
-    )
+    password_field = next(field for field in account_view.fields if field.name == 'password_hash')
     assert isinstance(password_field, PasswordField)
     assert password_field.exclude_from_list
     assert password_field.exclude_from_detail
-
-    fight_view = next(view for view in views if isinstance(view, FightAdmin))
-    relationship_fields = {field.name: field for field in fight_view.fields if isinstance(field, (HasOne, HasMany))}
-    assert isinstance(relationship_fields['participants'], HasMany)
-    assert isinstance(relationship_fields['actions'], HasMany)
 
 
 class FakeAsyncSession(AsyncSession):

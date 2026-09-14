@@ -55,3 +55,6 @@ class Session(TableBase, table=True):
     )
     expires_at: datetime = Field(nullable=False, sa_type=UTCDateTime)
     account: Account = Relationship(back_populates='sessions')
+    active_character: Character = Relationship(
+        sa_relationship_kwargs={'foreign_keys': '[Session.active_character_id]'},
+    )

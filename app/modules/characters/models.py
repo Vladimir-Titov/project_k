@@ -1,15 +1,51 @@
+from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 from uuid import UUID
 
-from sqlalchemy import Column, Enum
+from sqlalchemy import Column, Numeric, UniqueConstraint
 from sqlmodel import Field, Relationship
 
 from app.core.db.models import TableBase
-from app.modules.characters.enums import CharacterClass
 
 if TYPE_CHECKING:
     from app.modules.auth.models import Account
-    from app.modules.battles.models import FightParticipants
+
+
+class CharacterClass(TableBase, table=True):
+    __tablename__ = 'character_classes'
+
+    code: str = Field(index=True, unique=True, nullable=False, max_length=64)
+    title: str = Field(nullable=False, max_length=128)
+    description: str | None = Field(default=None, nullable=True, max_length=512)
+    is_playable: bool = Field(default=True, nullable=False)
+
+    def __admin_repr__(self, _request: Any) -> str:
+        return f'{self.title} ({self.code})'
+
+
+class ClassStat(TableBase, table=True):
+    __tablename__ = 'class_stats'
+    __table_args__ = (UniqueConstraint('class_id', 'stat_definition_id', name='uq_class_stat_pair'),)
+
+    class_id: UUID = Field(index=True, nullable=False, foreign_key='frontiers.character_classes.id')
+    stat_definition_id: UUID = Field(
+        index=True,
+        nullable=False,
+        foreign_key='frontiers.stat_definitions.id',
+    )
+    value: Decimal = Field(sa_column=Column(Numeric(18, 4), nullable=False))
+
+
+class ClassAction(TableBase, table=True):
+    __tablename__ = 'class_actions'
+    __table_args__ = (UniqueConstraint('class_id', 'action_definition_id', name='uq_class_action_pair'),)
+
+    class_id: UUID = Field(index=True, nullable=False, foreign_key='frontiers.character_classes.id')
+    action_definition_id: UUID = Field(
+        index=True,
+        nullable=False,
+        foreign_key='frontiers.action_definitions.id',
+    )
 
 
 class Character(TableBase, table=True):
@@ -27,23 +63,37 @@ class Character(TableBase, table=True):
         nullable=False,
         max_length=64,
     )
-    character_class: CharacterClass = Field(
-        default=CharacterClass.ADVENTURER,
-        sa_column=Column(
-            Enum(
-                CharacterClass,
-                name='character_class',
-                native_enum=False,
-                validate_strings=True,
-                values_callable=lambda enum: [item.value for item in enum],
-            ),
-            nullable=False,
-        ),
+    class_id: UUID = Field(
+        index=True,
+        nullable=False,
+        foreign_key='frontiers.character_classes.id',
     )
     account: Account = Relationship(back_populates='character')
-    fight_participations: list[FightParticipants] = Relationship(
-        back_populates='character',
-    )
 
     def __admin_repr__(self, _request: Any) -> str:
         return self.nickname
+
+
+class CharacterStat(TableBase, table=True):
+    __tablename__ = 'character_stats'
+    __table_args__ = (UniqueConstraint('character_id', 'stat_definition_id', name='uq_character_stat_pair'),)
+
+    character_id: UUID = Field(index=True, nullable=False, foreign_key='frontiers.characters.id')
+    stat_definition_id: UUID = Field(
+        index=True,
+        nullable=False,
+        foreign_key='frontiers.stat_definitions.id',
+    )
+    value: Decimal = Field(sa_column=Column(Numeric(18, 4), nullable=False))
+
+
+class CharacterAction(TableBase, table=True):
+    __tablename__ = 'character_actions'
+    __table_args__ = (UniqueConstraint('character_id', 'action_definition_id', name='uq_character_action_pair'),)
+
+    character_id: UUID = Field(index=True, nullable=False, foreign_key='frontiers.characters.id')
+    action_definition_id: UUID = Field(
+        index=True,
+        nullable=False,
+        foreign_key='frontiers.action_definitions.id',
+    )

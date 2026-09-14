@@ -10,10 +10,23 @@ from app.modules.auth.exceptions import (
     InvalidRefreshTokenError,
     LoginAlreadyExistsError,
 )
-from app.modules.battles.exceptions import FightTargetNotFoundError
+from app.modules.battles.exceptions import (
+    FightActionNotAvailableError,
+    FightFinishedError,
+    FightNotFoundError,
+    FightTargetNotFoundError,
+    FightUnavailableError,
+    InvalidFightActionError,
+    NotYourTurnError,
+    StaleFightVersionError,
+    TurnExpiredError,
+)
 from app.modules.characters.exceptions import (
     CharacterAlreadyExistsError,
+    CharacterBusyError,
+    CharacterClassNotFoundError,
     CharacterNotFoundError,
+    InvalidCharacterClassError,
     NicknameAlreadyExistsError,
 )
 from app.modules.game_context.exceptions import CharacterRequiredError, InvalidGameSessionError
@@ -40,7 +53,18 @@ def register_exception_handlers(application: FastAPI) -> None:
         (CharacterAlreadyExistsError, status.HTTP_409_CONFLICT, 'character_already_exists'),
         (NicknameAlreadyExistsError, status.HTTP_409_CONFLICT, 'nickname_already_exists'),
         (CharacterNotFoundError, status.HTTP_404_NOT_FOUND, 'character_not_found'),
+        (CharacterClassNotFoundError, status.HTTP_422_UNPROCESSABLE_CONTENT, 'character_class_not_found'),
+        (InvalidCharacterClassError, status.HTTP_409_CONFLICT, 'invalid_character_class'),
+        (CharacterBusyError, status.HTTP_409_CONFLICT, 'character_busy'),
         (FightTargetNotFoundError, status.HTTP_404_NOT_FOUND, 'fight_target_not_found'),
+        (FightNotFoundError, status.HTTP_404_NOT_FOUND, 'fight_not_found'),
+        (FightUnavailableError, status.HTTP_409_CONFLICT, 'fight_unavailable'),
+        (FightFinishedError, status.HTTP_409_CONFLICT, 'fight_finished'),
+        (NotYourTurnError, status.HTTP_409_CONFLICT, 'not_your_turn'),
+        (TurnExpiredError, status.HTTP_409_CONFLICT, 'turn_expired'),
+        (StaleFightVersionError, status.HTTP_409_CONFLICT, 'stale_fight_version'),
+        (FightActionNotAvailableError, status.HTTP_409_CONFLICT, 'fight_action_not_available'),
+        (InvalidFightActionError, status.HTTP_422_UNPROCESSABLE_CONTENT, 'invalid_fight_action'),
     )
     for error_type, status_code, detail in mappings:
         application.add_exception_handler(

@@ -1,1 +1,0 @@
-"""Shared world monsters."""

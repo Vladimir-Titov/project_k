@@ -2,9 +2,8 @@ import pytest
 
 from app.container import Repositories
 from app.modules.auth.repository import AccountRepository, SessionRepository
-from app.modules.battles.repository import FightRepository
+from app.modules.battles.repository import FightParticipantRepository, FightRepository
 from app.modules.characters.repository import CharacterRepository
-from app.modules.monsters.repository import MobRepository
 from tests.core.db.fakes import FakeConnection, FakePool
 
 
@@ -15,10 +14,10 @@ def test_properties_return_and_cache_typed_repositories() -> None:
     assert isinstance(repositories.accounts, AccountRepository)
     assert isinstance(repositories.sessions, SessionRepository)
     assert isinstance(repositories.characters, CharacterRepository)
-    assert isinstance(repositories.mobs, MobRepository)
+    assert isinstance(repositories.fight_participants, FightParticipantRepository)
     assert repositories.fights is repositories.fights
     assert repositories.characters is repositories.characters
-    assert repositories.mobs is repositories.mobs
+    assert repositories.fight_participants is repositories.fight_participants
 
 
 @pytest.mark.asyncio

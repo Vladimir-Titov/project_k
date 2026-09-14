@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, Mock
 import pytest
 
 from app.core.config import DbConfig
-from app.lifespans.db import close_db_pool, create_db_pool
+from app.lifespans.db import close_db_pool, configure_connection, create_db_pool
 
 
 @pytest.mark.asyncio
@@ -35,6 +35,7 @@ async def test_create_db_pool_creates_fixed_warm_pool(monkeypatch: pytest.Monkey
         timeout=4,
         command_timeout=12,
         server_settings={'application_name': 'test-app'},
+        init=configure_connection,
     )
     pool.fetchval.assert_awaited_once_with('SELECT 1')
 

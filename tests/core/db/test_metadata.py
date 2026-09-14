@@ -72,7 +72,7 @@ def test_alembic_creates_each_custom_schema_before_its_tables() -> None:
                 schema='frontiers',
             ),
             ops.CreateTableOp(
-                'fight_actions',
+                'fight_participants',
                 [Column('id', Integer, primary_key=True)],
                 schema='frontiers',
             ),

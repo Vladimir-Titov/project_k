@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-08-04T00:00:00.000Z" agent="Codex" version="24.7.17" type="device" compressed="false">
+  <diagram id="architecture" name="1. Архитектура">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="a-title" value="Система персонажа, характеристик и эффектов" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=28;fontStyle=1;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="900" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-subtitle" value="Определения контента → runtime-состояние → детерминированный расчёт → чистый боевой движок" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=14;fontColor=#5E6C84;" vertex="1" parent="1">
+          <mxGeometry x="40" y="62" width="1000" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a-legend-content" value="Настраиваемый контент" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#403294;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="25" width="190" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-legend-runtime" value="Постоянное/runtime состояние" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#0747A6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1325" y="25" width="220" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-legend-pure" value="Чистый расчёт" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#006644;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1560" y="25" width="160" height="34" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a-content-zone" value="КОНТЕНТ И ПРАВИЛА" style="swimlane;html=1;rounded=1;startSize=34;fillColor=#F7F5FF;swimlaneFillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#403294;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="390" height="610" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-stat-def" value="&lt;b&gt;StatDefinition&lt;/b&gt;&#xa;Динамический каталог характеристик&#xa;key, scale, min, max, default" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="65" y="165" width="160" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-action-def" value="&lt;b&gt;ActionDefinition&lt;/b&gt;&#xa;Удар, банка, способность&#xa;cost, cooldown, target rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="245" y="165" width="160" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-item-template" value="&lt;b&gt;ItemTemplate&lt;/b&gt;&#xa;Броня, сфера, амулет&#xa;equip/consume/use" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="65" y="275" width="160" height="84" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-effect-def" value="&lt;b&gt;EffectDefinition&lt;/b&gt;&#xa;duration_scope, stacking_policy, max_stacks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="245" y="275" width="160" height="84" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rule" value="&lt;b&gt;EffectRule&lt;/b&gt;&#xa;STAT_MODIFIER | RESOURCE_DELTA&#xa;APPLY_EFFECT | BATTLE_FLAG&#xa;target, phase, priority, operation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="65" y="385" width="340" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-trigger" value="&lt;b&gt;EffectTrigger&lt;/b&gt;&#xa;ON_APPLY | TURN_START | TURN_END | TIME_INTERVAL&#xa;every_n_turns / interval_seconds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="65" y="510" width="340" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-dsl" value="&lt;b&gt;Безопасный DSL + публикация&lt;/b&gt;&#xa;source.stat(...), target.stat(...), base, value_before&#xa;+ − × ÷, compare, min/max/clamp&#xa;Парсер → типы → граф зависимостей → запрет циклов" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0B3;strokeColor=#FFAB00;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="65" y="620" width="340" height="78" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a-runtime-zone" value="ПОСТОЯННОЕ И RUNTIME-СОСТОЯНИЕ" style="swimlane;html=1;rounded=1;startSize=34;fillColor=#F4F8FF;swimlaneFillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#0747A6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="110" width="500" height="610" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-actor" value="&lt;b&gt;Actor&lt;/b&gt;&#xa;Character или Monster&#xa;Единый владелец состояния" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="485" y="165" width="145" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-stat-value" value="&lt;b&gt;ActorStatValue&lt;/b&gt;&#xa;base_value: Decimal&#xa;Вычисленное значение не хранится" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="650" y="165" width="135" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-resource" value="&lt;b&gt;ResourcePool&lt;/b&gt;&#xa;current_value&#xa;max_stat_key = max_health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="805" y="165" width="130" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-equipment" value="&lt;b&gt;Equipment&lt;/b&gt;&#xa;Надетые ItemInstance&#xa;Источник эффекта EQUIPPED" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="485" y="285" width="180" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-active-effect" value="&lt;b&gt;ActiveEffect&lt;/b&gt;&#xa;definition + source + battle?&#xa;stacks, expires_at, remaining_turns&#xa;status, next_tick_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="700" y="280" width="235" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-effect-target" value="&lt;b&gt;ActiveEffectTarget&lt;/b&gt;&#xa;SELF | TARGET | ALLY | ENEMY&#xa;Конкретные цели определяет сервер" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="700" y="405" width="235" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-duration" value="&lt;b&gt;Область жизни&lt;/b&gt;&#xa;EQUIPPED · REAL_TIME · TURNS&#xa;BATTLE · ACTION" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#006644;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="485" y="405" width="180" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-scheduled" value="&lt;b&gt;scheduled_game_events&lt;/b&gt;&#xa;Источник истины для TIME_INTERVAL&#xa;deduplication_key + execute_at&#xa;никаких asyncio.sleep()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="485" y="535" width="450" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-stacking" value="INDEPENDENT · STACK · REFRESH · REPLACE  |  max_stacks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#0747A6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="485" y="660" width="450" height="38" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a-calc-zone" value="ЧИСТЫЙ РАСЧЁТ" style="swimlane;html=1;rounded=1;startSize=34;fillColor=#F3FFF9;swimlaneFillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#006644;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="990" y="110" width="750" height="610" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-snapshot-builder" value="&lt;b&gt;Snapshot Builder&lt;/b&gt;&#xa;Загружает base stats, ресурсы, эффекты и определения&#xa;Создаёт неизменяемое состояние без ORM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="165" width="220" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-context" value="&lt;b&gt;EvaluationContext&lt;/b&gt;&#xa;source, target, action, battle&#xa;turn, timestamp, resource snapshot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="165" width="205" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-snapshot" value="&lt;b&gt;BattleState snapshot&lt;/b&gt;&#xa;N участников, команды, активные эффекты&#xa;rng state / seed, version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="165" width="220" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-stat-calc" value="&lt;b&gt;StatCalculator&lt;/b&gt;&#xa;1. base_value&#xa;2. правила по phase + priority&#xa;3. ADD / MULTIPLY / OVERRIDE&#xa;4. MIN / MAX и границы StatDefinition" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="310" width="220" height="135" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-trigger-processor" value="&lt;b&gt;TriggerProcessor&lt;/b&gt;&#xa;ON_APPLY, TURN_START, TURN_END&#xa;Выдаёт EffectOperation[]&#xa;Не меняет входное состояние" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="310" width="205" height="135" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-engine" value="&lt;b&gt;BattleEngine.resolve_action&lt;/b&gt;&#xa;(state, command, context, rng)&#xa;&#xa;Нет FastAPI · Нет SQLAlchemy&#xa;Нет системного времени · Нет sleep" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;strokeWidth=2;fontColor=#006644;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="310" width="220" height="135" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-result" value="&lt;b&gt;BattleResult&lt;/b&gt;&#xa;new_state&#xa;resource deltas + effects&#xa;ordered domain events" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="490" width="220" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-order-note" value="Детерминизм: один snapshot + команда + context + RNG ⇒ один и тот же результат" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0B3;strokeColor=#FFAB00;fontColor=#172B4D;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="635" width="695" height="48" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a-examples-title" value="ЧЕТЫРЕ ПРИМЕРА НА ОДНОЙ МОДЕЛИ" style="text;html=1;strokeColor=none;fillColor=none;fontSize=16;fontStyle=1;fontColor=#172B4D;" vertex="1" parent="1">
+          <mxGeometry x="40" y="755" width="500" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-example-armor" value="&lt;b&gt;1. Надета броня&lt;/b&gt;&#xa;scope = EQUIPPED&#xa;ADD strength: 5&#xa;ADD max_health: 10&#xa;ADD capacity: −2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7F5FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="800" width="390" height="145" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-example-buff" value="&lt;b&gt;2. Бафф на 30 минут&lt;/b&gt;&#xa;scope = REAL_TIME, expires_at = now + 30m&#xa;ADD crit_chance: 10&#xa;ADD max_health: 20&#xa;ADD luck: 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F4F8FF;strokeColor=#2684FF;fontColor=#172B4D;align=left;spacingLeft=14;" vertex="1" parent="1">
+          <mxGeometry x="460" y="800" width="390" height="145" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-example-poison" value="&lt;b&gt;3. Яд / лечение со временем&lt;/b&gt;&#xa;RESOURCE_DELTA current_health: −10&#xa;TIME_INTERVAL = 5s или every_n_turns = 3&#xa;Банка: +23 / 10s&#xa;Тики — события, не модификаторы max_health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBE6;strokeColor=#FF5630;fontColor=#172B4D;align=left;spacingLeft=14;" vertex="1" parent="1">
+          <mxGeometry x="880" y="800" width="390" height="145" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-example-hit" value="&lt;b&gt;4. Усиление одного удара&lt;/b&gt;&#xa;scope = ACTION&#xa;Сфера: ADD crit_chance: 45%&#xa;Амулет: MULTIPLY crit_chance: 1.25&#xa;MULTIPLY hit_power: 1.31&#xa;После action эффекты не сохраняются" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#172B4D;align=left;spacingLeft=14;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="800" width="440" height="145" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-example-dependent" value="Пример зависимой формулы: value = clamp(value_before + source.stat(&quot;strength&quot;) × 0.30, 0, 100)&#xa;Администратор может добавить характеристику, но она влияет на игру только после ссылки из правила или системной формулы." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0B3;strokeColor=#FFAB00;fontColor=#172B4D;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="980" width="1700" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ae-1" value="описывает" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="a-effect-def" target="a-rule"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-2" value="запускает" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="a-effect-def" target="a-trigger"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-3" value="источник" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="a-action-def" target="a-effect-def"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-4" value="источник" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="a-item-template" target="a-effect-def"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-5" value="валидирует" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#FFAB00;fontColor=#172B4D;" edge="1" parent="1" source="a-dsl" target="a-rule"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-6" value="имеет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="a-actor" target="a-stat-value"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-7" value="имеет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="a-actor" target="a-resource"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-8" value="создаёт EQUIPPED effect" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="a-equipment" target="a-active-effect"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-9" value="действует на" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="a-active-effect" target="a-effect-target"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-10" value="планирует тик" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="a-active-effect" target="a-scheduled"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-11" value="читает" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="a-active-effect" target="a-snapshot-builder"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-12" value="snapshot" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="a-snapshot-builder" target="a-snapshot"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-13" value="контекст" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="a-context" target="a-stat-calc"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-14" value="computed stats" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="a-stat-calc" target="a-engine"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-15" value="operations" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="a-trigger-processor" target="a-engine"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-16" value="resolve" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="a-snapshot" target="a-engine"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae-17" value="возвращает" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="a-engine" target="a-result"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="er-model" name="2. ER-модель">
+    <mxGraphModel dx="1900" dy="1300" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="e-title" value="ER-модель: контент, состояние и журнал боя" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=28;fontStyle=1;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="40" y="20" width="900" height="42" as="geometry"/></mxCell>
+        <mxCell id="e-note" value="PK/FK приведены концептуально. Decimal хранится как NUMERIC. Полиморфные источники разрешаются application service и валидируются при публикации контента." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0B3;strokeColor=#FFAB00;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1240" height="46" as="geometry"/></mxCell>
+        <mxCell id="e-leg1" value="Контент" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontStyle=1;fontColor=#403294;" vertex="1" parent="1"><mxGeometry x="1320" y="75" width="150" height="38" as="geometry"/></mxCell>
+        <mxCell id="e-leg2" value="Runtime" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontStyle=1;fontColor=#0747A6;" vertex="1" parent="1"><mxGeometry x="1490" y="75" width="150" height="38" as="geometry"/></mxCell>
+        <mxCell id="e-leg3" value="Бой / журнал" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontStyle=1;fontColor=#006644;" vertex="1" parent="1"><mxGeometry x="1660" y="75" width="180" height="38" as="geometry"/></mxCell>
+
+        <mxCell id="e-stat-def" value="&lt;b&gt;StatDefinition&lt;/b&gt;&#xa;PK id&#xa;UQ key&#xa;title, description&#xa;decimal_scale&#xa;default_value&#xa;min_value?, max_value?&#xa;is_active, version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="40" y="165" width="220" height="190" as="geometry"/></mxCell>
+        <mxCell id="e-action-def" value="&lt;b&gt;ActionDefinition&lt;/b&gt;&#xa;PK id&#xa;UQ key&#xa;title&#xa;target_policy&#xa;cost_formula?&#xa;cooldown_formula?&#xa;is_active, version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="300" y="165" width="220" height="190" as="geometry"/></mxCell>
+        <mxCell id="e-item-template" value="&lt;b&gt;ItemTemplate&lt;/b&gt;&#xa;PK id&#xa;UQ key&#xa;title, item_type&#xa;stackable&#xa;equip_slot?&#xa;is_active, version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="560" y="165" width="220" height="190" as="geometry"/></mxCell>
+        <mxCell id="e-source-link" value="&lt;b&gt;EffectSourceLink&lt;/b&gt;&#xa;PK id&#xa;FK effect_definition_id&#xa;source_type ACTION | ITEM&#xa;source_id&#xa;activation EQUIP | USE | HIT&#xa;order" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="820" y="165" width="240" height="190" as="geometry"/></mxCell>
+        <mxCell id="e-effect-def" value="&lt;b&gt;EffectDefinition&lt;/b&gt;&#xa;PK id&#xa;UQ key&#xa;title&#xa;duration_scope&#xa;duration_formula?&#xa;stacking_policy&#xa;max_stacks&#xa;is_active, version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="1100" y="155" width="240" height="210" as="geometry"/></mxCell>
+        <mxCell id="e-effect-rule" value="&lt;b&gt;EffectRule&lt;/b&gt;&#xa;PK id&#xa;FK effect_definition_id&#xa;kind STAT_MODIFIER | RESOURCE_DELTA&#xa;     APPLY_EFFECT | BATTLE_FLAG&#xa;target_selector&#xa;stat_key? / resource_key?&#xa;operation ADD | MULTIPLY | OVERRIDE | MIN | MAX&#xa;value_formula, condition_formula?&#xa;phase, priority" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="1380" y="145" width="310" height="230" as="geometry"/></mxCell>
+        <mxCell id="e-effect-trigger" value="&lt;b&gt;EffectTrigger&lt;/b&gt;&#xa;PK id&#xa;FK effect_definition_id&#xa;trigger_type ON_APPLY | TURN_START&#xa;             TURN_END | TIME_INTERVAL&#xa;interval_seconds?&#xa;every_n_turns?&#xa;tick_limit?" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAE6FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="1100" y="405" width="280" height="190" as="geometry"/></mxCell>
+        <mxCell id="e-publish" value="&lt;b&gt;ContentPublication&lt;/b&gt;&#xa;Парсинг и типизация DSL&#xa;Проверка ссылок на stat/resource&#xa;Граф зависимостей без циклов&#xa;Иммутабельная опубликованная version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0B3;strokeColor=#FFAB00;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="1420" y="425" width="270" height="145" as="geometry"/></mxCell>
+
+        <mxCell id="e-actor" value="&lt;b&gt;Actor&lt;/b&gt;&#xa;PK id&#xa;actor_type CHARACTER | MONSTER&#xa;actor_ref_id&#xa;version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="40" y="465" width="220" height="135" as="geometry"/></mxCell>
+        <mxCell id="e-actor-stat" value="&lt;b&gt;ActorStatValue&lt;/b&gt;&#xa;PK id&#xa;FK actor_id&#xa;FK stat_definition_id&#xa;base_value NUMERIC&#xa;UQ(actor_id, stat_definition_id)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="300" y="445" width="240" height="170" as="geometry"/></mxCell>
+        <mxCell id="e-resource" value="&lt;b&gt;ResourcePool&lt;/b&gt;&#xa;PK id&#xa;FK actor_id&#xa;resource_key&#xa;current_value NUMERIC&#xa;max_stat_key&#xa;UQ(actor_id, resource_key)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="580" y="445" width="240" height="170" as="geometry"/></mxCell>
+        <mxCell id="e-active-effect" value="&lt;b&gt;ActiveEffect&lt;/b&gt;&#xa;PK id&#xa;FK effect_definition_id + version&#xa;FK source_actor_id?&#xa;FK battle_id?&#xa;source_instance_type/id?&#xa;stacks&#xa;started_at, expires_at?&#xa;remaining_turns?, next_tick_at?&#xa;status, version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="860" y="425" width="260" height="220" as="geometry"/></mxCell>
+        <mxCell id="e-active-target" value="&lt;b&gt;ActiveEffectTarget&lt;/b&gt;&#xa;PK id&#xa;FK active_effect_id&#xa;FK target_actor_id&#xa;applied_at&#xa;UQ(active_effect_id, target_actor_id)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="860" y="695" width="260" height="165" as="geometry"/></mxCell>
+        <mxCell id="e-scheduled-event" value="&lt;b&gt;ScheduledGameEvent&lt;/b&gt;&#xa;PK id&#xa;event_type EFFECT_TICK | EFFECT_EXPIRE&#xa;aggregate_type/id&#xa;execute_at, status, attempts&#xa;UQ deduplication_key&#xa;payload, processed_at?" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="580" y="695" width="240" height="190" as="geometry"/></mxCell>
+
+        <mxCell id="e-battle" value="&lt;b&gt;Battle&lt;/b&gt;&#xa;PK id&#xa;status&#xa;turn_number, active_participant_id&#xa;turn_deadline_at&#xa;rng_seed / rng_state&#xa;version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="40" y="745" width="240" height="185" as="geometry"/></mxCell>
+        <mxCell id="e-participant" value="&lt;b&gt;BattleParticipant&lt;/b&gt;&#xa;PK id&#xa;FK battle_id&#xa;FK actor_id&#xa;side, join_order&#xa;runtime_state / snapshot&#xa;is_active" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="320" y="735" width="240" height="185" as="geometry"/></mxCell>
+        <mxCell id="e-battle-action" value="&lt;b&gt;BattleAction&lt;/b&gt;&#xa;PK id&#xa;FK battle_id&#xa;FK initiator_participant_id&#xa;FK target_participant_id?&#xa;FK action_definition_id&#xa;idempotency_key&#xa;command_payload&#xa;turn_number, resolved_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="40" y="985" width="260" height="205" as="geometry"/></mxCell>
+        <mxCell id="e-battle-event" value="&lt;b&gt;BattleEvent&lt;/b&gt;&#xa;PK id&#xa;FK battle_id&#xa;FK battle_action_id?&#xa;sequence_number&#xa;event_type&#xa;payload (resolved facts)&#xa;created_at&#xa;UQ(battle_id, sequence_number)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#172B4D;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="340" y="985" width="260" height="205" as="geometry"/></mxCell>
+        <mxCell id="e-snapshot-note" value="&lt;b&gt;Граница хранения&lt;/b&gt;&#xa;ActorStatValue хранит только base_value.&#xa;Итоговые характеристики вычисляются для контекста.&#xa;BattleParticipant может хранить зафиксированный боевой snapshot,&#xa;если правила боя не должны изменяться вслед за внешними эффектами." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#006644;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="670" y="965" width="450" height="170" as="geometry"/></mxCell>
+        <mxCell id="e-invariants" value="&lt;b&gt;Инварианты&lt;/b&gt;&#xa;• Все изменения ресурсов и эффектов — в одной короткой транзакции с Battle.version.&#xa;• Повтор команды отсекается idempotency_key.&#xa;• TIME_INTERVAL создаёт ScheduledGameEvent; обработчик блокирует строки и идемпотентен.&#xa;• ActiveEffect ссылается на опубликованную версию определения: последующее редактирование контента не меняет уже идущий бой.&#xa;• Target selector — правило контента; ActiveEffectTarget — уже разрешённая сервером конкретная цель." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0B3;strokeColor=#FFAB00;fontColor=#172B4D;align=left;spacingLeft=14;" vertex="1" parent="1"><mxGeometry x="1180" y="695" width="620" height="240" as="geometry"/></mxCell>
+        <mxCell id="e-enums" value="&lt;b&gt;Основные enum&lt;/b&gt;&#xa;duration_scope: EQUIPPED | REAL_TIME | TURNS | BATTLE | ACTION&#xa;stacking: INDEPENDENT | STACK | REFRESH | REPLACE&#xa;target: SELF | TARGET | ALLY | ENEMY&#xa;operation: ADD | MULTIPLY | OVERRIDE | MIN | MAX&#xa;&#xa;Логические состояния (stun, defending и т. п.) — BATTLE_FLAG/effect, не числовая характеристика." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7F5FF;strokeColor=#6554C0;fontColor=#172B4D;align=left;spacingLeft=14;" vertex="1" parent="1"><mxGeometry x="1180" y="970" width="620" height="185" as="geometry"/></mxCell>
+
+        <mxCell id="ee-1" value="определяет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="e-effect-def" target="e-effect-rule"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-2" value="имеет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="e-effect-def" target="e-effect-trigger"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-3" value="связывает" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERone;startArrow=ERmany;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="e-source-link" target="e-effect-def"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-4" value="ACTION source" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="e-action-def" target="e-source-link"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-5" value="ITEM source" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="e-item-template" target="e-source-link"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-6" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="e-actor" target="e-actor-stat"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-7" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#6554C0;fontColor=#403294;" edge="1" parent="1" source="e-stat-def" target="e-actor-stat"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-8" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="e-actor" target="e-resource"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-9" value="instance of version" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="e-effect-def" target="e-active-effect"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-10" value="1:N targets" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="e-active-effect" target="e-active-target"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-11" value="target" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="e-actor" target="e-active-target"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-12" value="schedules" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;strokeColor=#2684FF;fontColor=#0747A6;" edge="1" parent="1" source="e-active-effect" target="e-scheduled-event"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-13" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="e-battle" target="e-participant"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-14" value="actor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="e-actor" target="e-participant"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-15" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="e-battle" target="e-battle-action"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-16" value="ordered log" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=ERmany;startArrow=ERone;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="e-battle-action" target="e-battle-event"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-17" value="used action" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="e-action-def" target="e-battle-action"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee-18" value="battle-scoped" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;strokeColor=#36B37E;fontColor=#006644;" edge="1" parent="1" source="e-battle" target="e-active-effect"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="calculation-flow" name="3. Поток расчёта">
+    <mxGraphModel dx="1900" dy="1250" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1250" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="f-title" value="Поток применения действия и расчёта эффектов" style="text;html=1;strokeColor=none;fillColor=none;fontSize=28;fontStyle=1;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="40" y="20" width="1000" height="42" as="geometry"/></mxCell>
+        <mxCell id="f-app-lane" value="APPLICATION / ТРАНЗАКЦИЯ" style="swimlane;html=1;horizontal=0;startSize=34;rounded=1;fillColor=#F4F8FF;swimlaneFillColor=#DEEBFF;strokeColor=#2684FF;fontColor=#0747A6;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="90" width="1780" height="250" as="geometry"/></mxCell>
+        <mxCell id="f-pure-lane" value="ЧИСТОЕ ЯДРО" style="swimlane;html=1;horizontal=0;startSize=34;rounded=1;fillColor=#F3FFF9;swimlaneFillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#006644;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="370" width="1780" height="430" as="geometry"/></mxCell>
+        <mxCell id="f-time-lane" value="ТАЙМЕРЫ / SCHEDULER" style="swimlane;html=1;horizontal=0;startSize=34;rounded=1;fillColor=#FFF9E6;swimlaneFillColor=#FFF0B3;strokeColor=#FFAB00;fontColor=#172B4D;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="830" width="1780" height="270" as="geometry"/></mxCell>
+
+        <mxCell id="f-step1" value="&lt;b&gt;1. Принять команду&lt;/b&gt;&#xa;character_id проверен сервером&#xa;action_key + target_id&#xa;idempotency_key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="100" y="130" width="220" height="105" as="geometry"/></mxCell>
+        <mxCell id="f-step2" value="&lt;b&gt;2. Проверить и заблокировать&lt;/b&gt;&#xa;battle/version, участника, ход, дедлайн&#xa;цель и доступность action&#xa;SELECT … FOR UPDATE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="365" y="130" width="250" height="105" as="geometry"/></mxCell>
+        <mxCell id="f-step3" value="&lt;b&gt;3. Собрать входные данные&lt;/b&gt;&#xa;base stats + ресурсы&#xa;активные эффекты + версии определений&#xa;состояние боя и RNG" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2684FF;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="660" y="130" width="250" height="105" as="geometry"/></mxCell>
+        <mxCell id="f-step11" value="&lt;b&gt;11. Сохранить атомарно&lt;/b&gt;&#xa;Battle.version, ресурсы, ActiveEffect&#xa;BattleAction + ordered BattleEvent&#xa;scheduled events + outbox/WebSocket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DEEBFF;strokeColor=#2684FF;strokeWidth=2;fontColor=#0747A6;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="1480" y="125" width="280" height="115" as="geometry"/></mxCell>
+        <mxCell id="f-idempotent" value="Повтор того же idempotency_key возвращает уже сохранённый результат и не применяет эффекты повторно." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBE6;strokeColor=#FF5630;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="1000" y="140" width="380" height="72" as="geometry"/></mxCell>
+
+        <mxCell id="f-step4" value="&lt;b&gt;4. Immutable snapshot&lt;/b&gt;&#xa;BattleState + EvaluationContext&#xa;Никаких ORM-объектов" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="100" y="420" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="f-step5" value="&lt;b&gt;5. Выбрать правила&lt;/b&gt;&#xa;постоянные ActiveEffect&#xa;+ ACTION-scoped эффекты предмета/удара&#xa;+ триггеры текущего события" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="385" y="420" width="250" height="100" as="geometry"/></mxCell>
+        <mxCell id="f-step6" value="&lt;b&gt;6. Проверить DSL conditions&lt;/b&gt;&#xa;только опубликованный AST&#xa;source / target / action / battle context&#xa;ошибка формулы невозможна в runtime" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="690" y="420" width="260" height="100" as="geometry"/></mxCell>
+        <mxCell id="f-step7" value="&lt;b&gt;7. Рассчитать характеристики&lt;/b&gt;&#xa;base → phase/priority&#xa;ADD → MULTIPLY → OVERRIDE&#xa;MIN/MAX → bounds&#xa;Decimal, без float" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="1005" y="410" width="250" height="120" as="geometry"/></mxCell>
+        <mxCell id="f-step8" value="&lt;b&gt;8. Выполнить действие&lt;/b&gt;&#xa;формула урона / крита / лечения&#xa;RNG передан извне&#xa;цель уже разрешена сервером" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="1310" y="420" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="f-step9" value="&lt;b&gt;9. Применить операции&lt;/b&gt;&#xa;resource delta / clamp&#xa;apply/refresh/stack/replace effect&#xa;flags и счётчики ходов" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#36B37E;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="1310" y="620" width="230" height="105" as="geometry"/></mxCell>
+        <mxCell id="f-step10" value="&lt;b&gt;10. Вернуть BattleResult&lt;/b&gt;&#xa;new_state&#xa;resource_changes + effect_changes&#xa;ordered domain events" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;strokeWidth=2;fontColor=#006644;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="1005" y="620" width="250" height="105" as="geometry"/></mxCell>
+        <mxCell id="f-pure-note" value="&lt;b&gt;Гарантия чистого ядра&lt;/b&gt;&#xa;Одинаковые snapshot + command + context + RNG дают одинаковый результат. Ядро не выполняет SQL, не читает часы и не отправляет WebSocket." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3FCEF;strokeColor=#36B37E;fontColor=#006644;" vertex="1" parent="1"><mxGeometry x="385" y="620" width="565" height="105" as="geometry"/></mxCell>
+
+        <mxCell id="f-turn-start" value="&lt;b&gt;TURN_START&lt;/b&gt;&#xa;Вызывается use case начала хода&#xa;TriggerProcessor создаёт операции&#xa;Затем продолжается обычный flow 4→11" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FFAB00;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="110" y="885" width="300" height="120" as="geometry"/></mxCell>
+        <mxCell id="f-turn-end" value="&lt;b&gt;TURN_END&lt;/b&gt;&#xa;Вызывается после разрешения action&#xa;уменьшает remaining_turns&#xa;expire выполняется идемпотентно" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FFAB00;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="480" y="885" width="300" height="120" as="geometry"/></mxCell>
+        <mxCell id="f-time-interval" value="&lt;b&gt;TIME_INTERVAL&lt;/b&gt;&#xa;PostgreSQL: ScheduledGameEvent.next_tick_at&#xa;scheduler: FOR UPDATE SKIP LOCKED&#xa;deduplication_key защищает повтор" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FFAB00;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="850" y="875" width="330" height="135" as="geometry"/></mxCell>
+        <mxCell id="f-time-usecase" value="&lt;b&gt;EffectTick use case&lt;/b&gt;&#xa;Блокирует ActiveEffect + target resource&#xa;проверяет status / next_tick_at&#xa;строит snapshot и запускает тот же TriggerProcessor&#xa;сохраняет delta и планирует следующий тик" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FFAB00;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="1250" y="865" width="390" height="155" as="geometry"/></mxCell>
+        <mxCell id="f-no-sleep" value="Ни бой, ни эффект не держат процесс ожиданием. PostgreSQL хранит deadline/next_tick_at; scheduler только подбирает наступившие события." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0B3;strokeColor=#FFAB00;fontStyle=1;fontColor=#172B4D;" vertex="1" parent="1"><mxGeometry x="110" y="1040" width="1530" height="42" as="geometry"/></mxCell>
+
+        <mxCell id="fe-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2684FF;strokeWidth=2;" edge="1" parent="1" source="f-step1" target="f-step2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2684FF;strokeWidth=2;" edge="1" parent="1" source="f-step2" target="f-step3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-3" value="prepare" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2684FF;strokeWidth=2;fontColor=#0747A6;" edge="1" parent="1" source="f-step3" target="f-step4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#36B37E;strokeWidth=2;" edge="1" parent="1" source="f-step4" target="f-step5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#36B37E;strokeWidth=2;" edge="1" parent="1" source="f-step5" target="f-step6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-6" value="valid rules" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#36B37E;strokeWidth=2;fontColor=#006644;" edge="1" parent="1" source="f-step6" target="f-step7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-7" value="computed stats" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#36B37E;strokeWidth=2;fontColor=#006644;" edge="1" parent="1" source="f-step7" target="f-step8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-8" value="operations" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#36B37E;strokeWidth=2;fontColor=#006644;" edge="1" parent="1" source="f-step8" target="f-step9"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#36B37E;strokeWidth=2;" edge="1" parent="1" source="f-step9" target="f-step10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-10" value="persist" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2684FF;strokeWidth=2;fontColor=#0747A6;" edge="1" parent="1" source="f-step10" target="f-step11"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-11" value="same trigger path" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;strokeColor=#FFAB00;fontColor=#172B4D;" edge="1" parent="1" source="f-turn-start" target="f-step5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-12" value="same trigger path" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;strokeColor=#FFAB00;fontColor=#172B4D;" edge="1" parent="1" source="f-turn-end" target="f-step5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-13" value="due event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#FFAB00;strokeWidth=2;fontColor=#172B4D;" edge="1" parent="1" source="f-time-interval" target="f-time-usecase"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe-14" value="snapshot + trigger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;strokeColor=#FFAB00;fontColor=#172B4D;" edge="1" parent="1" source="f-time-usecase" target="f-step5"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

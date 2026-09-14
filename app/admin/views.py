@@ -1,7 +1,7 @@
 from html import escape
 from typing import Any
 
-from sqlalchemy import String, cast, inspect, or_
+from sqlalchemy import String, cast, inspect, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 from starlette_admin._types import RequestAction
@@ -9,12 +9,27 @@ from starlette_admin.contrib.sqla import ModelView
 from starlette_admin.exceptions import FormValidationError
 from starlette_admin.fields import PasswordField
 
-from app.modules.auth.models import Account
+from app.modules.auth.models import Account, Session
 from app.modules.auth.passwords import PasswordHasher
-from app.modules.battles.models import Fight, FightActions, FightParticipants
-from app.modules.characters.models import Character
-from app.modules.content.models import Actions, Characteristics, CharacteristicsActions
-from app.modules.monsters.models import Mob
+from app.modules.battles.models import (
+    Fight,
+    FightAction,
+    FightActiveEffect,
+    FightEvent,
+    FightParticipants,
+    FightParticipantStat,
+)
+from app.modules.characters.models import (
+    Character,
+    CharacterAction,
+    CharacterClass,
+    CharacterStat,
+    ClassAction,
+    ClassStat,
+)
+from app.modules.content.expressions import InvalidExpressionError, validate_expression
+from app.modules.content.models import ActionDefinition, ActionEffect, EffectDefinition, EffectRule
+from app.modules.stats.models import StatDefinition
 
 
 class SoftDeleteModelView(ModelView):
@@ -73,6 +88,10 @@ class AccountAdmin(SoftDeleteModelView):
     sortable_fields = ['id', 'login', 'created_at', 'is_archived']
     export_fields = ['id', 'login', 'created_at', 'updated_at', 'is_archived']
 
+    def __init__(self, model: type[Any], password_hasher: PasswordHasher, **kwargs: Any) -> None:
+        super().__init__(model, **kwargs)
+        self.password_hasher = password_hasher
+
     async def serialize(
         self,
         obj: Any,
@@ -91,35 +110,14 @@ class AccountAdmin(SoftDeleteModelView):
         result.pop('password_hash', None)
         return result
 
-    def __init__(
-        self,
-        model: type[Any],
-        password_hasher: PasswordHasher,
-        **kwargs: Any,
-    ) -> None:
-        super().__init__(model, **kwargs)
-        self.password_hasher = password_hasher
-
-    async def before_create(
-        self,
-        request: Request,
-        data: dict[str, Any],
-        obj: Account,
-    ) -> None:
+    async def before_create(self, request: Request, data: dict[str, Any], obj: Account) -> None:
         password = data.get('password_hash')
         if not isinstance(password, str) or not password:
-            raise FormValidationError(
-                {'password_hash': 'Password is required'},
-            )
+            raise FormValidationError({'password_hash': 'Password is required'})
         obj.password_hash = await self.password_hasher.hash(password)
         await super().before_create(request, data, obj)
 
-    async def before_edit(
-        self,
-        request: Request,
-        data: dict[str, Any],
-        obj: Account,
-    ) -> None:
+    async def before_edit(self, request: Request, data: dict[str, Any], obj: Account) -> None:
         password = data.get('password_hash')
         if isinstance(password, str) and password:
             obj.password_hash = await self.password_hasher.hash(password)
@@ -130,81 +128,44 @@ class AccountAdmin(SoftDeleteModelView):
         await super().before_edit(request, data, obj)
 
 
+class SessionAdmin(SoftDeleteModelView):
+    fields = [
+        'id',
+        'created_at',
+        'updated_at',
+        'is_archived',
+        'account',
+        'active_character',
+        PasswordField(
+            'refresh_token_hash',
+            label='Refresh token hash',
+            exclude_from_list=True,
+            exclude_from_detail=True,
+            searchable=False,
+            orderable=False,
+            required=True,
+        ),
+        'ip_address',
+        'user_agent',
+        'expires_at',
+    ]
+    searchable_fields = ['id', 'account', 'active_character', 'ip_address']
+    sortable_fields = [
+        'id',
+        'account_id',
+        'active_character_id',
+        'expires_at',
+        'created_at',
+        'is_archived',
+    ]
+
+
 class CharacterAdmin(SoftDeleteModelView):
-    exclude_fields_from_list = ['fight_participations']
-    exclude_fields_from_create = [
-        *SoftDeleteModelView.exclude_fields_from_create,
-        'fight_participations',
-    ]
-    exclude_fields_from_edit = [
-        *SoftDeleteModelView.exclude_fields_from_edit,
-        'fight_participations',
-    ]
     searchable_fields = ['nickname']
-    sortable_fields = ['id', 'nickname', 'character_class', 'created_at', 'is_archived']
-
-
-class MobAdmin(SoftDeleteModelView):
-    exclude_fields_from_list = ['fight_participations']
-    exclude_fields_from_create = [
-        *SoftDeleteModelView.exclude_fields_from_create,
-        'fight_participations',
-    ]
-    exclude_fields_from_edit = [
-        *SoftDeleteModelView.exclude_fields_from_edit,
-        'fight_participations',
-    ]
-    searchable_fields = ['name']
-    sortable_fields = ['id', 'name', 'created_at', 'is_archived']
-
-
-class ActionsAdmin(SoftDeleteModelView):
-    exclude_fields_from_list = ['characteristic_links', 'fight_actions']
-    exclude_fields_from_create = [
-        *SoftDeleteModelView.exclude_fields_from_create,
-        'characteristic_links',
-        'fight_actions',
-    ]
-    exclude_fields_from_edit = [
-        *SoftDeleteModelView.exclude_fields_from_edit,
-        'characteristic_links',
-        'fight_actions',
-    ]
-    searchable_fields = ['title', 'description']
-    sortable_fields = ['id', 'title', 'type', 'is_active', 'created_at', 'is_archived']
-
-
-class CharacteristicsAdmin(SoftDeleteModelView):
-    exclude_fields_from_list = ['action_links']
-    exclude_fields_from_create = [
-        *SoftDeleteModelView.exclude_fields_from_create,
-        'action_links',
-    ]
-    exclude_fields_from_edit = [
-        *SoftDeleteModelView.exclude_fields_from_edit,
-        'action_links',
-    ]
-    searchable_fields = ['title', 'description']
-    sortable_fields = ['id', 'title', 'value', 'created_at', 'is_archived']
-
-
-class CharacteristicsActionsAdmin(SoftDeleteModelView):
-    searchable_fields = ['characteristic', 'action']
-    sortable_fields = ['id', 'affect', 'created_at', 'is_archived']
+    sortable_fields = ['id', 'nickname', 'class_id', 'created_at', 'is_archived']
 
 
 class FightAdmin(SoftDeleteModelView):
-    exclude_fields_from_list = ['participants', 'actions']
-    exclude_fields_from_create = [
-        *SoftDeleteModelView.exclude_fields_from_create,
-        'participants',
-        'actions',
-    ]
-    exclude_fields_from_edit = [
-        *SoftDeleteModelView.exclude_fields_from_edit,
-        'participants',
-        'actions',
-    ]
     searchable_fields = ['id', 'status']
     sortable_fields = ['id', 'status', 'version', 'created_at', 'is_archived']
 
@@ -218,18 +179,7 @@ class FightAdmin(SoftDeleteModelView):
 
 
 class FightParticipantsAdmin(SoftDeleteModelView):
-    exclude_fields_from_list = ['initiated_actions', 'targeted_actions']
-    exclude_fields_from_create = [
-        *SoftDeleteModelView.exclude_fields_from_create,
-        'initiated_actions',
-        'targeted_actions',
-    ]
-    exclude_fields_from_edit = [
-        *SoftDeleteModelView.exclude_fields_from_edit,
-        'initiated_actions',
-        'targeted_actions',
-    ]
-    searchable_fields = ['id', 'fight', 'character', 'mob']
+    searchable_fields = ['id', 'fight_id', 'source_id', 'display_name']
     sortable_fields = ['id', 'side', 'created_at', 'is_archived']
 
     def get_search_query(self, request: Request, term: str) -> Any:
@@ -238,77 +188,73 @@ class FightParticipantsAdmin(SoftDeleteModelView):
         return or_(
             cast(FightParticipants.id, String).ilike(pattern),
             cast(FightParticipants.fight_id, String).ilike(pattern),
-            FightParticipants.character.has(Character.nickname.ilike(pattern)),
-            FightParticipants.mob.has(Mob.name.ilike(pattern)),
+            FightParticipants.display_name.ilike(pattern),
         )
 
     async def select2_result(self, obj: FightParticipants, request: Request) -> str:
         del request
-        actor = obj.character.nickname if obj.character is not None else obj.mob.name
-        label = escape(f'{actor} — {obj.side.value} — fight {obj.fight_id}')
+        label = escape(f'{obj.display_name} — {obj.side.value} — fight {obj.fight_id}')
         return f'<span>{label}</span>'
 
-    async def validate(self, request: Request, data: dict[str, Any]) -> None:
-        if (data.get('character') is None) == (data.get('mob') is None):
-            raise FormValidationError(
-                {
-                    'character': 'Select exactly one actor: character or mob',
-                    'mob': 'Select exactly one actor: character or mob',
-                },
-            )
-        await super().validate(request, data)
 
-
-class FightActionsAdmin(SoftDeleteModelView):
-    searchable_fields = ['id', 'fight', 'action', 'initiator_participant']
+class ContentModelAdmin(SoftDeleteModelView):
     sortable_fields = ['id', 'created_at', 'is_archived']
 
-    async def validate(self, request: Request, data: dict[str, Any]) -> None:
-        fight = data.get('fight')
-        initiator = data.get('initiator_participant')
-        target = data.get('target_participant')
-        errors: dict[str, str] = {}
-        if fight is not None and initiator is not None and initiator.fight_id != fight.id:
-            errors['initiator_participant'] = 'Initiator must belong to the selected fight'
-        if fight is not None and target is not None and target.fight_id != fight.id:
-            errors['target_participant'] = 'Target must belong to the selected fight'
-        if errors:
-            raise FormValidationError(errors)
-        await super().validate(request, data)
+
+class EffectRuleAdmin(ContentModelAdmin):
+    async def before_create(self, request: Request, data: dict[str, Any], obj: EffectRule) -> None:
+        await self._validate(request, obj)
+        await super().before_create(request, data, obj)
+
+    async def before_edit(self, request: Request, data: dict[str, Any], obj: EffectRule) -> None:
+        await self._validate(request, obj)
+        await super().before_edit(request, data, obj)
+
+    @staticmethod
+    async def _validate(request: Request, obj: EffectRule) -> None:
+        session = request.state.session
+        available_stat_codes = None
+        if isinstance(session, AsyncSession):
+            result = await session.execute(
+                select(StatDefinition.code).where(
+                    StatDefinition.is_archived.is_(False),
+                ),
+            )
+            available_stat_codes = set(result.scalars())
+        try:
+            validate_expression(
+                obj.evaluator_type,
+                obj.expression,
+                available_stat_codes=available_stat_codes,
+                allow_random=obj.kind.value != 'stat_modifier',
+            )
+        except InvalidExpressionError as error:
+            raise FormValidationError({'expression': str(error)}) from error
 
 
-def create_admin_views(
-    password_hasher: PasswordHasher,
-) -> tuple[ModelView, ...]:
+def create_admin_views(password_hasher: PasswordHasher) -> tuple[ModelView, ...]:
     return (
-        AccountAdmin(
-            Account,
-            password_hasher,
-            icon='fa-solid fa-user-lock',
-            label='Accounts',
-        ),
+        AccountAdmin(Account, password_hasher, icon='fa-solid fa-user-lock', label='Accounts'),
+        SessionAdmin(Session, icon='fa-solid fa-key', label='Sessions'),
         CharacterAdmin(Character, icon='fa-solid fa-user', label='Characters'),
-        MobAdmin(Mob, icon='fa-solid fa-dragon', label='Mobs'),
-        ActionsAdmin(Actions, icon='fa-solid fa-wand-magic-sparkles', label='Actions'),
-        CharacteristicsAdmin(
-            Characteristics,
-            icon='fa-solid fa-chart-simple',
-            label='Characteristics',
-        ),
-        CharacteristicsActionsAdmin(
-            CharacteristicsActions,
-            icon='fa-solid fa-link',
-            label='Characteristic actions',
-        ),
         FightAdmin(Fight, icon='fa-solid fa-shield-halved', label='Fights'),
         FightParticipantsAdmin(
             FightParticipants,
             icon='fa-solid fa-users',
             label='Fight participants',
         ),
-        FightActionsAdmin(
-            FightActions,
-            icon='fa-solid fa-bolt',
-            label='Fight actions',
-        ),
+        ContentModelAdmin(CharacterClass, icon='fa-solid fa-hat-wizard', label='Character classes'),
+        ContentModelAdmin(StatDefinition, icon='fa-solid fa-chart-simple', label='Stat definitions'),
+        ContentModelAdmin(ClassStat, icon='fa-solid fa-sliders', label='Class stats'),
+        ContentModelAdmin(CharacterStat, icon='fa-solid fa-chart-line', label='Character stats'),
+        ContentModelAdmin(ActionDefinition, icon='fa-solid fa-bolt', label='Action definitions'),
+        ContentModelAdmin(EffectDefinition, icon='fa-solid fa-wand-sparkles', label='Effect definitions'),
+        EffectRuleAdmin(EffectRule, icon='fa-solid fa-code', label='Effect rules'),
+        ContentModelAdmin(ActionEffect, icon='fa-solid fa-link', label='Action effects'),
+        ContentModelAdmin(ClassAction, icon='fa-solid fa-link', label='Class actions'),
+        ContentModelAdmin(CharacterAction, icon='fa-solid fa-link', label='Character actions'),
+        ContentModelAdmin(FightParticipantStat, icon='fa-solid fa-chart-column', label='Fight stats'),
+        ContentModelAdmin(FightActiveEffect, icon='fa-solid fa-fire', label='Fight effects'),
+        ContentModelAdmin(FightAction, icon='fa-solid fa-hand-fist', label='Fight actions'),
+        ContentModelAdmin(FightEvent, icon='fa-solid fa-list', label='Fight events'),
     )

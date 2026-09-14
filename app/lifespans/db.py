@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 from collections.abc import AsyncIterator, Awaitable
 from contextlib import asynccontextmanager
@@ -14,6 +15,17 @@ from app.lifespans.base import Lifespan
 logger = logging.getLogger(__name__)
 
 
+async def configure_connection(connection: asyncpg.Connection) -> None:
+    for type_name in ('json', 'jsonb'):
+        await connection.set_type_codec(
+            type_name,
+            schema='pg_catalog',
+            encoder=json.dumps,
+            decoder=json.loads,
+            format='text',
+        )
+
+
 async def create_db_pool(config: DbConfig) -> asyncpg.Pool:
     pool_awaitable = cast(
         Awaitable[asyncpg.Pool],
@@ -26,6 +38,7 @@ async def create_db_pool(config: DbConfig) -> asyncpg.Pool:
             timeout=config.connect_timeout,
             command_timeout=config.command_timeout,
             server_settings={'application_name': config.application_name},
+            init=configure_connection,
         ),
     )
     pool = await pool_awaitable

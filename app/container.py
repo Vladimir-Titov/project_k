@@ -7,11 +7,28 @@ import asyncpg
 from app.core.db.repository import BaseRepository
 from app.modules.auth.repository import AccountRepository, SessionRepository
 from app.modules.battles.repository import (
+    FightActionRepository,
+    FightActiveEffectRepository,
+    FightEventRepository,
     FightParticipantRepository,
+    FightParticipantStatRepository,
     FightRepository,
 )
-from app.modules.characters.repository import CharacterRepository
-from app.modules.monsters.repository import MobRepository
+from app.modules.characters.repository import (
+    CharacterActionRepository,
+    CharacterClassRepository,
+    CharacterRepository,
+    CharacterStatRepository,
+    ClassActionRepository,
+    ClassStatRepository,
+)
+from app.modules.content.repository import (
+    ActionDefinitionRepository,
+    ActionEffectRepository,
+    EffectDefinitionRepository,
+    EffectRuleRepository,
+)
+from app.modules.stats.repository import StatDefinitionRepository
 
 
 class RepositoryContainer:
@@ -63,9 +80,61 @@ class Repositories(RepositoryContainer):
         return self.get_repository(CharacterRepository)
 
     @property
-    def mobs(self) -> MobRepository:
-        return self.get_repository(MobRepository)
-
-    @property
     def fight_participants(self) -> FightParticipantRepository:
         return self.get_repository(FightParticipantRepository)
+
+    @property
+    def fight_participant_stats(self) -> FightParticipantStatRepository:
+        return self.get_repository(FightParticipantStatRepository)
+
+    @property
+    def fight_active_effects(self) -> FightActiveEffectRepository:
+        return self.get_repository(FightActiveEffectRepository)
+
+    @property
+    def fight_actions(self) -> FightActionRepository:
+        return self.get_repository(FightActionRepository)
+
+    @property
+    def fight_events(self) -> FightEventRepository:
+        return self.get_repository(FightEventRepository)
+
+    @property
+    def character_classes(self) -> CharacterClassRepository:
+        return self.get_repository(CharacterClassRepository)
+
+    @property
+    def class_stats(self) -> ClassStatRepository:
+        return self.get_repository(ClassStatRepository)
+
+    @property
+    def class_actions(self) -> ClassActionRepository:
+        return self.get_repository(ClassActionRepository)
+
+    @property
+    def character_stats(self) -> CharacterStatRepository:
+        return self.get_repository(CharacterStatRepository)
+
+    @property
+    def character_actions(self) -> CharacterActionRepository:
+        return self.get_repository(CharacterActionRepository)
+
+    @property
+    def stat_definitions(self) -> StatDefinitionRepository:
+        return self.get_repository(StatDefinitionRepository)
+
+    @property
+    def action_definitions(self) -> ActionDefinitionRepository:
+        return self.get_repository(ActionDefinitionRepository)
+
+    @property
+    def effect_definitions(self) -> EffectDefinitionRepository:
+        return self.get_repository(EffectDefinitionRepository)
+
+    @property
+    def effect_rules(self) -> EffectRuleRepository:
+        return self.get_repository(EffectRuleRepository)
+
+    @property
+    def action_effects(self) -> ActionEffectRepository:
+        return self.get_repository(ActionEffectRepository)

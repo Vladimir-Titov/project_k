@@ -6,7 +6,7 @@ import pytest
 from pydantic import ValidationError
 
 from app.core.db.query import compile_query
-from app.modules.battles.enums import FightSide, FightStatus
+from app.modules.battles.enums import FightStatus
 from app.modules.battles.models import Fight
 from app.modules.battles.repository import FightRepository
 
@@ -20,20 +20,41 @@ def fight_row() -> dict[str, object]:
         'is_archived': False,
         'status': FightStatus.started.value,
         'version': 1,
-        'winner_side': None,
+        'turn_number': 1,
+        'active_participant_id': None,
+        'turn_deadline_at': now,
+        'winner_participant_id': None,
+        'finish_reason': None,
+        'rng_seed': 42,
+        'rng_counter': 0,
+        'next_event_sequence': 1,
+        'content_snapshot': {},
         'title': 'Test fight',
     }
 
 
+def create_payload(title: str, *, status: FightStatus = FightStatus.started, version: int = 1) -> dict[str, object]:
+    return {
+        'status': status,
+        'version': version,
+        'turn_deadline_at': datetime.now(UTC),
+        'rng_seed': 42,
+        'content_snapshot': {},
+        'title': title,
+    }
+
+
 def test_dynamic_models_follow_entity_fields() -> None:
-    assert set(FightRepository.payload_model.model_fields) == {'status', 'version', 'winner_side', 'title'}
+    assert {'status', 'version', 'turn_deadline_at', 'rng_seed', 'content_snapshot', 'title'} <= set(
+        FightRepository.payload_model.model_fields,
+    )
     assert {
         'id',
         'status',
         'status_in',
         'version_ge',
         'created_at_ge',
-        'winner_side_is',
+        'winner_participant_id_is',
     } <= set(FightRepository.filter_model.model_fields)
 
 
@@ -43,7 +64,7 @@ async def test_create_validates_dynamic_kwargs_and_returns_entity() -> None:
     row = fight_row()
     repository.fetchrow = AsyncMock(return_value=row)
 
-    fight = await repository.create(status=FightStatus.started, title='Test fight')
+    fight = await repository.create(**create_payload('Test fight'))
 
     assert isinstance(fight, Fight)
     assert fight.id == row['id']
@@ -69,8 +90,8 @@ async def test_create_many_validates_payloads_and_returns_entities() -> None:
 
     fights = await repository.create_many(
         [
-            {'status': FightStatus.started, 'title': 'First fight'},
-            {'status': FightStatus.in_progress, 'version': 2, 'title': 'Second fight'},
+            create_payload('First fight'),
+            create_payload('Second fight', status=FightStatus.in_progress, version=2),
         ],
     )
 
@@ -103,8 +124,8 @@ async def test_create_many_rejects_invalid_payload_before_database_call() -> Non
     with pytest.raises(ValidationError):
         await repository.create_many(
             [
-                {'status': FightStatus.started, 'title': 'Valid fight'},
-                {'id': uuid7(), 'status': FightStatus.in_progress, 'title': 'Invalid fight'},
+                create_payload('Valid fight'),
+                {'id': uuid7(), **create_payload('Invalid fight', status=FightStatus.in_progress)},
             ],
         )
 
@@ -121,7 +142,7 @@ async def test_search_builds_validated_filters_and_ordering() -> None:
     fights = await repository.search(
         status_in=[FightStatus.started, FightStatus.in_progress],
         created_at_ge=created_ge,
-        winner_side_is=None,
+        winner_participant_id_is=None,
         order_by=['-created_at'],
         limit=25,
         offset=5,
@@ -132,7 +153,7 @@ async def test_search_builds_validated_filters_and_ordering() -> None:
     sql, parameters = compile_query(query)
     assert 'fights.status IN' in sql
     assert 'fights.created_at >=' in sql
-    assert 'fights.winner_side IS NULL' in sql
+    assert 'fights.winner_participant_id IS NULL' in sql
     assert 'ORDER BY frontiers.fights.created_at DESC' in sql
     assert 'LIMIT' in sql
     assert created_ge in parameters
@@ -153,9 +174,9 @@ async def test_search_rejects_unknown_filter_before_database_call() -> None:
 async def test_search_maps_enum_values_to_entity() -> None:
     repository = FightRepository(Mock())
     row = fight_row()
-    row['winner_side'] = FightSide.team_a.value
+    row['status'] = FightStatus.in_progress.value
     repository.fetch = AsyncMock(return_value=[row])
 
     fights = await repository.search()
 
-    assert fights[0].winner_side is FightSide.team_a
+    assert fights[0].status is FightStatus.in_progress

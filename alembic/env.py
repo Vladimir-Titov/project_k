@@ -11,7 +11,7 @@ import app.modules.auth.models  # noqa: F401
 import app.modules.battles.models  # noqa: F401
 import app.modules.characters.models  # noqa: F401
 import app.modules.content.models  # noqa: F401
-import app.modules.monsters.models  # noqa: F401
+import app.modules.stats.models  # noqa: F401
 from alembic import context
 from app.core.config import get_db_config, get_log_config
 from app.core.config.logging import setup_logging
