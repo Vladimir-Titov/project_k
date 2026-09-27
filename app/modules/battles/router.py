@@ -5,6 +5,8 @@ from fastapi import APIRouter, Depends, Query, status
 
 from app.api.dependencies import get_active_character_context, get_fight_service
 from app.modules.battles.schemas import (
+    BotTargetResponse,
+    CreateBotFightRequest,
     CreateFightRequest,
     FightActionResponse,
     FightStateResponse,
@@ -32,6 +34,27 @@ async def create_fight(
     fight_service: Annotated[FightService, Depends(get_fight_service)],
 ) -> FightStateResponse:
     fight = await fight_service.create_fight(attacker_id=context.character_id, target_id=payload.target_id)
+    return await fight_service.get_state(fight_id=fight.id, character_id=context.character_id)
+
+
+@router.get('/bot-targets', response_model=list[BotTargetResponse])
+async def list_bot_targets(
+    context: Annotated[ActiveCharacterContext, Depends(get_active_character_context)],
+    fight_service: Annotated[FightService, Depends(get_fight_service)],
+) -> list[BotTargetResponse]:
+    return await fight_service.list_bot_targets(context.character_id)
+
+
+@router.post('/bots', response_model=FightStateResponse, status_code=status.HTTP_201_CREATED)
+async def create_bot_fight(
+    payload: CreateBotFightRequest,
+    context: Annotated[ActiveCharacterContext, Depends(get_active_character_context)],
+    fight_service: Annotated[FightService, Depends(get_fight_service)],
+) -> FightStateResponse:
+    fight = await fight_service.create_bot_fight(
+        attacker_id=context.character_id,
+        bot_template_id=payload.bot_template_id,
+    )
     return await fight_service.get_state(fight_id=fight.id, character_id=context.character_id)
 
 

@@ -14,6 +14,7 @@ from app.modules.battles.repository import (
     FightParticipantStatRepository,
     FightRepository,
 )
+from app.modules.bots.repository import BotTemplateActionRepository, BotTemplateRepository, BotTemplateStatRepository
 from app.modules.characters.repository import (
     CharacterActionRepository,
     CharacterClassRepository,
@@ -63,6 +64,18 @@ class RepositoryContainer:
 
 
 class Repositories(RepositoryContainer):
+    @property
+    def bot_templates(self) -> BotTemplateRepository:
+        return self.get_repository(BotTemplateRepository)
+
+    @property
+    def bot_template_stats(self) -> BotTemplateStatRepository:
+        return self.get_repository(BotTemplateStatRepository)
+
+    @property
+    def bot_template_actions(self) -> BotTemplateActionRepository:
+        return self.get_repository(BotTemplateActionRepository)
+
     @property
     def accounts(self) -> AccountRepository:
         return self.get_repository(AccountRepository)

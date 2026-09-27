@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, Mock
 from fastapi.testclient import TestClient
 
 from app.application import create_app
-from app.core.config import AdminPanelConfig, AppConfig, DbConfig, LogConfig
+from app.core.config import AdminPanelConfig, AppConfig, DbConfig, LogConfig, StorageConfig
 from app.lifespans import db
 
 
@@ -19,6 +19,7 @@ def test_lifespan_exposes_pool_and_closes_it(monkeypatch: object) -> None:
         admin_config=AdminPanelConfig(_env_file=None, enabled=False),
         db_config=db_config,
         log_config=LogConfig(_env_file=None),
+        storage_config=StorageConfig(_env_file=None, enabled=False),
     )
 
     with TestClient(application) as client:
@@ -47,6 +48,7 @@ def test_cors_wildcard_preflight(monkeypatch: object) -> None:
         admin_config=AdminPanelConfig(_env_file=None, enabled=False),
         db_config=DbConfig(_env_file=None),
         log_config=LogConfig(_env_file=None),
+        storage_config=StorageConfig(_env_file=None, enabled=False),
     )
 
     with TestClient(application) as client:

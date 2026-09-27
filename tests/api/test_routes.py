@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 
 from app.api.dependencies import get_unit_of_work
 from app.application import create_app
-from app.core.config import AdminPanelConfig, AppConfig, AuthConfig, DbConfig, LogConfig
+from app.core.config import AdminPanelConfig, AppConfig, AuthConfig, DbConfig, LogConfig, StorageConfig
 from app.lifespans import db
 from app.modules.auth.models import Account
 from app.modules.auth.passwords import PasswordHasher
@@ -45,6 +45,7 @@ def build_auth_application(
         auth_config=auth_config,
         db_config=DbConfig(_env_file=None),
         log_config=LogConfig(_env_file=None),
+        storage_config=StorageConfig(_env_file=None, enabled=False),
     )
 
     async def override_unit_of_work() -> AsyncIterator[FakeAuthRepositories]:

@@ -9,6 +9,7 @@ from sqlmodel.sql.sqltypes import AutoString
 
 import app.modules.auth.models  # noqa: F401
 import app.modules.battles.models  # noqa: F401
+import app.modules.bots.models  # noqa: F401
 import app.modules.characters.models  # noqa: F401
 import app.modules.content.models  # noqa: F401
 import app.modules.stats.models  # noqa: F401

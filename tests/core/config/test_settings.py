@@ -10,6 +10,7 @@ from app.core.config import (
     DbConfig,
     LogConfig,
     SentryConfig,
+    StorageConfig,
 )
 
 
@@ -69,7 +70,7 @@ def test_db_config_builds_encoded_dsns_and_hides_password() -> None:
 
 @pytest.mark.parametrize(
     'config_type',
-    [AdminPanelConfig, AppConfig, AuthConfig, DbConfig, LogConfig, SentryConfig],
+    [AdminPanelConfig, AppConfig, AuthConfig, DbConfig, LogConfig, SentryConfig, StorageConfig],
 )
 def test_unknown_dotenv_values_are_ignored(config_type: type[object], tmp_path: Path) -> None:
     dotenv_path = tmp_path / '.env'

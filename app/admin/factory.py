@@ -7,6 +7,7 @@ from starlette_admin.contrib.sqla import Admin
 from app.admin.auth import AdminAuthProvider
 from app.admin.views import create_admin_views
 from app.core.config import AdminPanelConfig, DbConfig
+from app.core.files.images import ImageService
 from app.modules.auth.passwords import PasswordHasher
 
 
@@ -14,6 +15,7 @@ def create_admin(
     db_config: DbConfig,
     admin_config: AdminPanelConfig,
     password_hasher: PasswordHasher,
+    images: ImageService | None = None,
 ) -> tuple[Admin, AsyncEngine]:
     engine = create_async_engine(
         db_config.alembic_dsn,
@@ -34,6 +36,6 @@ def create_admin(
             ),
         ],
     )
-    for view in create_admin_views(password_hasher):
+    for view in create_admin_views(password_hasher, images):
         admin.add_view(view)
     return admin, engine

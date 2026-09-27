@@ -10,13 +10,17 @@ from app.core.config import (
     AuthConfig,
     DbConfig,
     LogConfig,
+    StorageConfig,
     get_admin_panel_config,
     get_app_config,
     get_auth_config,
     get_db_config,
     get_log_config,
+    get_storage_config,
 )
 from app.core.config.logging import setup_logging
+from app.core.files.images import ImageService
+from app.core.files.s3 import S3FileRepository
 from app.lifespans import create_lifespan
 from app.modules.auth.passwords import PasswordHasher
 
@@ -27,14 +31,18 @@ def create_app(
     auth_config: AuthConfig | None = None,
     db_config: DbConfig | None = None,
     log_config: LogConfig | None = None,
+    storage_config: StorageConfig | None = None,
 ) -> FastAPI:
     resolved_app_config = app_config or get_app_config()
     resolved_admin_config = admin_config or get_admin_panel_config()
     resolved_auth_config = auth_config or get_auth_config()
     resolved_db_config = db_config or get_db_config()
     resolved_log_config = log_config or get_log_config()
+    resolved_storage_config = storage_config or get_storage_config()
     setup_logging(resolved_log_config)
     password_hasher = PasswordHasher(resolved_auth_config)
+    files = S3FileRepository(resolved_storage_config) if resolved_storage_config.enabled else None
+    images = ImageService(files, resolved_storage_config.max_image_size_bytes) if files is not None else None
 
     admin = None
     admin_engine = None
@@ -43,6 +51,7 @@ def create_app(
             resolved_db_config,
             resolved_admin_config,
             password_hasher,
+            images,
         )
 
     application = FastAPI(
@@ -56,6 +65,7 @@ def create_app(
             resolved_auth_config,
             password_hasher,
             admin_engine,
+            files,
         ),
     )
     application.add_middleware(

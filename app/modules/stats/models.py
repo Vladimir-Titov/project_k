@@ -3,7 +3,7 @@ from typing import Any
 from uuid import UUID
 
 from sqlalchemy import Column, Enum, Numeric
-from sqlmodel import Field
+from sqlmodel import Field, Relationship
 
 from app.core.db.models import TableBase
 from app.modules.stats.enums import StatKind
@@ -35,6 +35,9 @@ class StatDefinition(TableBase, table=True):
         default=None,
         nullable=True,
         foreign_key='frontiers.stat_definitions.id',
+    )
+    max_stat_definition: StatDefinition = Relationship(
+        sa_relationship_kwargs={'remote_side': 'StatDefinition.id'},
     )
 
     def __admin_repr__(self, _request: Any) -> str:

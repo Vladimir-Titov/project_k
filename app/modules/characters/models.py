@@ -9,6 +9,8 @@ from app.core.db.models import TableBase
 
 if TYPE_CHECKING:
     from app.modules.auth.models import Account
+    from app.modules.content.models import ActionDefinition
+    from app.modules.stats.models import StatDefinition
 
 
 class CharacterClass(TableBase, table=True):
@@ -34,6 +36,8 @@ class ClassStat(TableBase, table=True):
         foreign_key='frontiers.stat_definitions.id',
     )
     value: Decimal = Field(sa_column=Column(Numeric(18, 4), nullable=False))
+    character_class: CharacterClass = Relationship()
+    stat_definition: StatDefinition = Relationship()
 
 
 class ClassAction(TableBase, table=True):
@@ -46,6 +50,8 @@ class ClassAction(TableBase, table=True):
         nullable=False,
         foreign_key='frontiers.action_definitions.id',
     )
+    character_class: CharacterClass = Relationship()
+    action_definition: ActionDefinition = Relationship()
 
 
 class Character(TableBase, table=True):
@@ -69,6 +75,7 @@ class Character(TableBase, table=True):
         foreign_key='frontiers.character_classes.id',
     )
     account: Account = Relationship(back_populates='character')
+    character_class: CharacterClass = Relationship()
 
     def __admin_repr__(self, _request: Any) -> str:
         return self.nickname
@@ -85,6 +92,8 @@ class CharacterStat(TableBase, table=True):
         foreign_key='frontiers.stat_definitions.id',
     )
     value: Decimal = Field(sa_column=Column(Numeric(18, 4), nullable=False))
+    character: Character = Relationship()
+    stat_definition: StatDefinition = Relationship()
 
 
 class CharacterAction(TableBase, table=True):
@@ -97,3 +106,5 @@ class CharacterAction(TableBase, table=True):
         nullable=False,
         foreign_key='frontiers.action_definitions.id',
     )
+    character: Character = Relationship()
+    action_definition: ActionDefinition = Relationship()

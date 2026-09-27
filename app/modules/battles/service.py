@@ -2,11 +2,12 @@ import secrets
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from typing import Any
-from uuid import UUID
+from uuid import UUID, uuid7
 
 import asyncpg
 
 from app.container import Repositories
+from app.core.config import BattleConfig, get_battle_config
 from app.modules.battles.engine import (
     ActiveEffectState,
     BattleState,
@@ -32,6 +33,7 @@ from app.modules.battles.exceptions import (
 from app.modules.battles.models import Fight, FightAction, FightEvent, FightParticipants
 from app.modules.battles.outcomes import calculate_carried_health
 from app.modules.battles.schemas import (
+    BotTargetResponse,
     FightActionResponse,
     FightActiveEffectResponse,
     FightEventResponse,
@@ -40,15 +42,17 @@ from app.modules.battles.schemas import (
     FightStateResponse,
     FightTargetResponse,
 )
+from app.modules.bots.behavior import choose_action
+from app.modules.bots.models import BotTemplate
+from app.modules.characters.models import Character
 from app.modules.content.enums import TargetPolicy
 from app.modules.content.expressions import InvalidExpressionError, validate_expression
 
-TURN_DURATION = timedelta(seconds=30)
-
 
 class FightService:
-    def __init__(self, repositories: Repositories) -> None:
+    def __init__(self, repositories: Repositories, config: BattleConfig | None = None) -> None:
         self.repositories = repositories
+        self.turn_duration = timedelta(seconds=(config or get_battle_config()).turn_duration_seconds)
 
     async def list_targets(self, character_id: UUID) -> list[FightTargetResponse]:
         result: list[FightTargetResponse] = []
@@ -76,34 +80,105 @@ class FightService:
         target = await self.repositories.characters.get_by_id(target_id)
         if attacker is None or attacker.is_archived or target is None or target.is_archived:
             raise FightTargetNotFoundError
-        for character in (attacker, target):
-            if await self.repositories.fight_participants.get_active_for_source('character', character.id):
-                raise FightUnavailableError
-
-        attacker_stats = await self._character_snapshot(attacker.id)
+        if await self.repositories.fight_participants.get_active_for_source('character', target.id):
+            raise FightUnavailableError
         target_stats = await self._character_snapshot(target.id)
+        target_actions = await self._action_snapshot(target.id, set(target_stats))
+        return await self._create_fight(
+            attacker=attacker,
+            target_name=target.nickname,
+            target_source_type='character',
+            target_source_id=target.id,
+            target_stats=target_stats,
+            target_actions=target_actions,
+        )
+
+    async def list_bot_targets(self, character_id: UUID) -> list[BotTargetResponse]:
+        del character_id
+        result: list[BotTargetResponse] = []
+        for template in await self.repositories.bot_templates.list_active():
+            try:
+                stats = await self._bot_snapshot(template)
+            except FightUnavailableError:
+                continue
+            result.append(
+                BotTargetResponse(
+                    id=template.id,
+                    code=template.code,
+                    title=template.title,
+                    description=template.description,
+                    stats={code: stat['current_value'] for code, stat in stats.items()},
+                ),
+            )
+        return result
+
+    async def create_bot_fight(self, *, attacker_id: UUID, bot_template_id: UUID) -> Fight:
+        attacker = await self.repositories.characters.get_by_id(attacker_id)
+        template = await self.repositories.bot_templates.get_by_id(bot_template_id)
+        if (
+            attacker is None
+            or attacker.is_archived
+            or template is None
+            or template.is_archived
+            or not template.is_active
+        ):
+            raise FightTargetNotFoundError
+        bot_stats = await self._bot_snapshot(template)
+        links = await self.repositories.bot_template_actions.list_for_template(template.id)
+        bot_actions = await self._actions_snapshot(links, set(bot_stats))
+        bot_priority = list(bot_actions)
+        if not bot_priority:
+            raise FightUnavailableError
+        return await self._create_fight(
+            attacker=attacker,
+            target_name=template.title,
+            target_source_type='bot',
+            target_source_id=uuid7(),
+            target_stats=bot_stats,
+            target_actions=bot_actions,
+            bot_template_id=template.id,
+            bot_priority=bot_priority,
+        )
+
+    async def _create_fight(
+        self,
+        *,
+        attacker: Character,
+        target_name: str,
+        target_source_type: str,
+        target_source_id: UUID,
+        target_stats: dict[str, dict[str, Any]],
+        target_actions: dict[str, Any],
+        bot_template_id: UUID | None = None,
+        bot_priority: list[str] | None = None,
+    ) -> Fight:
+        if await self.repositories.fight_participants.get_active_for_source('character', attacker.id):
+            raise FightUnavailableError
+        attacker_stats = await self._character_snapshot(attacker.id)
         if attacker_stats['health']['current_value'] <= 0 or target_stats['health']['current_value'] <= 0:
             raise FightUnavailableError
         content_snapshot = {
             'actions': {
                 str(attacker.id): await self._action_snapshot(attacker.id, set(attacker_stats)),
-                str(target.id): await self._action_snapshot(target.id, set(target_stats)),
+                str(target_source_id): target_actions,
             },
         }
+        if bot_priority is not None:
+            content_snapshot['bot_action_priority'] = bot_priority
         now = datetime.now(UTC)
         fight = await self.repositories.fights.create(
             status=FightStatus.started,
             version=1,
             turn_number=1,
             active_participant_id=None,
-            turn_deadline_at=now + TURN_DURATION,
+            turn_deadline_at=now + self.turn_duration,
             winner_participant_id=None,
             finish_reason=None,
             rng_seed=secrets.randbits(63),
             rng_counter=0,
             next_event_sequence=1,
             content_snapshot=content_snapshot,
-            title=f'{attacker.nickname} против {target.nickname}',
+            title=f'{attacker.nickname} против {target_name}',
         )
         try:
             attacker_participant = await self.repositories.fight_participants.create(
@@ -119,9 +194,10 @@ class FightService:
             )
             target_participant = await self.repositories.fight_participants.create(
                 fight_id=fight.id,
-                source_type='character',
-                source_id=target.id,
-                display_name=target.nickname,
+                source_type=target_source_type,
+                source_id=target_source_id,
+                bot_template_id=bot_template_id,
+                display_name=target_name,
                 side=FightSide.team_b,
                 turn_order=2,
                 is_active=True,
@@ -191,6 +267,7 @@ class FightService:
             fight = await self.repositories.fights.get_for_update(fight_id)
             if fight is None:
                 raise FightNotFoundError
+        fight = await self._take_bot_turn(fight)
         return await self._state_response(fight, requester, events_after)
 
     async def perform_action(  # noqa: C901, PLR0912
@@ -265,10 +342,13 @@ class FightService:
             )
         except (InvalidExpressionError, ValueError) as error:
             raise InvalidFightActionError from error
-        events = await self._persist_result(fight, result, fight_action=fight_action)
+        first_new_event = fight.next_event_sequence - 1
+        await self._persist_result(fight, result, fight_action=fight_action)
         updated = await self.repositories.fights.get_by_id(fight.id)
         if updated is None:
             raise RuntimeError('Fight disappeared after action')
+        updated = await self._take_bot_turn(updated)
+        events = await self.repositories.fight_events.list_after(fight.id, first_new_event)
         response = FightActionResponse(
             fight_action_id=fight_action.id,
             fight_id=fight.id,
@@ -280,12 +360,66 @@ class FightService:
         await self.repositories.fight_actions.save_result(fight_action.id, response.model_dump(mode='json'))
         return response
 
+    async def _take_bot_turn(self, fight: Fight) -> Fight:
+        if fight.status not in {FightStatus.started, FightStatus.in_progress} or fight.active_participant_id is None:
+            return fight
+        bot = await self.repositories.fight_participants.get_in_fight(fight.id, fight.active_participant_id)
+        if bot is None or bot.source_type != 'bot':
+            return fight
+        participants = await self.repositories.fight_participants.list_for_fight(fight.id)
+        target = next(participant for participant in participants if participant.id != bot.id)
+        actions = fight.content_snapshot['actions'][str(bot.source_id)]
+        try:
+            action_code = choose_action(actions, fight.content_snapshot['bot_action_priority'])
+            definition = actions[action_code]
+            chosen_target = bot if definition['target_policy'] == TargetPolicy.SELF else target
+            fight_action, _ = await self.repositories.fight_actions.create_or_get(
+                fight_id=fight.id,
+                initiator_participant_id=bot.id,
+                target_participant_id=chosen_target.id,
+                idempotency_key=uuid7(),
+                action_code=action_code,
+                turn_number=fight.turn_number,
+            )
+            result = resolve_action(
+                await self._engine_state(fight),
+                action_code=action_code,
+                action_definition=definition,
+                initiator_participant_id=bot.id,
+                target_participant_id=chosen_target.id,
+            )
+        except (InvalidExpressionError, ValueError) as error:
+            raise InvalidFightActionError from error
+        events = await self._persist_result(fight, result, fight_action=fight_action)
+        updated = await self.repositories.fights.get_by_id(fight.id)
+        if updated is None:
+            raise RuntimeError('Fight disappeared after bot action')
+        await self.repositories.fight_actions.save_result(
+            fight_action.id,
+            FightActionResponse(
+                fight_action_id=fight_action.id,
+                fight_id=fight.id,
+                version=updated.version,
+                turn_number=updated.turn_number,
+                status=updated.status,
+                events=[self._event_response(event) for event in events],
+            ).model_dump(mode='json'),
+        )
+        return updated
+
     async def _character_stats_by_code(self, character_id: UUID) -> dict[str, Decimal]:
         return {item['code']: item['current_value'] for item in (await self._character_snapshot(character_id)).values()}
 
     async def _character_snapshot(self, character_id: UUID) -> dict[str, dict[str, Any]]:
+        result = await self._stats_snapshot(
+            await self.repositories.character_stats.list_for_character(character_id, for_update=True),
+        )
+        if {'health', 'max_health', 'attack', 'defense'} - set(result):
+            raise FightUnavailableError
+        return result
+
+    async def _stats_snapshot(self, values: list[Any]) -> dict[str, dict[str, Any]]:
         result: dict[str, dict[str, Any]] = {}
-        values = await self.repositories.character_stats.list_for_character(character_id, for_update=True)
         for value in values:
             definition = await self.repositories.stat_definitions.get_by_id(value.stat_definition_id)
             if definition is None or definition.is_archived:
@@ -304,8 +438,30 @@ class FightService:
                 'initial_value': value.value,
                 'current_value': value.value,
             }
+        return result
+
+    async def _bot_snapshot(self, template: BotTemplate) -> dict[str, dict[str, Any]]:
+        result = await self._stats_snapshot(
+            await self.repositories.bot_template_stats.list_for_template(template.id),
+        )
         if {'health', 'max_health', 'attack', 'defense'} - set(result):
             raise FightUnavailableError
+        if result['health']['current_value'] <= 0 or result['max_health']['current_value'] <= 0:
+            raise FightUnavailableError
+        if result['health']['current_value'] > result['max_health']['current_value']:
+            raise FightUnavailableError
+        for stat in result.values():
+            value = stat['current_value']
+            maximum_code = stat['max_stat_code']
+            if (
+                (stat['min_value'] is not None and value < stat['min_value'])
+                or (stat['max_value'] is not None and value > stat['max_value'])
+                or (
+                    maximum_code is not None
+                    and (maximum_code not in result or value > result[maximum_code]['current_value'])
+                )
+            ):
+                raise FightUnavailableError
         return result
 
     async def _store_participant_stats(self, participant_id: UUID, values: dict[str, dict[str, Any]]) -> None:
@@ -314,8 +470,14 @@ class FightService:
         )
 
     async def _action_snapshot(self, character_id: UUID, stat_codes: set[str]) -> dict[str, Any]:
+        return await self._actions_snapshot(
+            await self.repositories.character_actions.list_for_character(character_id),
+            stat_codes,
+        )
+
+    async def _actions_snapshot(self, links: list[Any], stat_codes: set[str]) -> dict[str, Any]:
         result: dict[str, Any] = {}
-        for link in await self.repositories.character_actions.list_for_character(character_id):
+        for link in links:
             action = await self.repositories.action_definitions.get_by_id(link.action_definition_id)
             if action is None or action.is_archived or not action.is_active:
                 continue
@@ -350,6 +512,7 @@ class FightService:
                         'target_selector': action_effect.target_selector.value,
                         'effect': {
                             'code': effect.code,
+                            'image_url': effect.image_url,
                             'duration': effect.duration.value,
                             'duration_turns': effect.duration_turns,
                             'stacking_policy': effect.stacking_policy.value,
@@ -359,6 +522,7 @@ class FightService:
                 )
             result[action.code] = {
                 'code': action.code,
+                'image_url': action.image_url,
                 'target_policy': action.target_policy.value,
                 'effects': effects,
             }
@@ -479,7 +643,7 @@ class FightService:
                 status=FightStatus.in_progress,
                 turn_number=fight.turn_number + 1,
                 active_participant_id=result.next_active_participant_id,
-                turn_deadline_at=datetime.now(UTC) + TURN_DURATION,
+                turn_deadline_at=datetime.now(UTC) + self.turn_duration,
             )
         await self.repositories.fights.update_state(fight.id, **values)
         if result.winner_participant_id is not None:
@@ -570,6 +734,7 @@ class FightService:
                     effects=[
                         FightActiveEffectResponse(
                             code=effect.effect_code,
+                            image_url=effect.definition_snapshot.get('image_url'),
                             source_participant_id=effect.source_participant_id,
                             target_participant_id=effect.target_participant_id,
                             remaining_turns=effect.remaining_turns,

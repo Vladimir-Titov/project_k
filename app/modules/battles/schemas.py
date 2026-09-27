@@ -13,6 +13,18 @@ class CreateFightRequest(BaseModel):
     target_id: UUID
 
 
+class CreateBotFightRequest(BaseModel):
+    bot_template_id: UUID
+
+
+class BotTargetResponse(BaseModel):
+    id: UUID
+    code: str
+    title: str
+    description: str | None
+    stats: dict[str, Decimal]
+
+
 class PerformFightActionRequest(BaseModel):
     action_code: str = Field(min_length=1, max_length=64)
     target_participant_id: UUID
@@ -43,6 +55,7 @@ class FightParticipantStatResponse(BaseModel):
 
 class FightActiveEffectResponse(BaseModel):
     code: str
+    image_url: str | None = None
     source_participant_id: UUID
     target_participant_id: UUID
     remaining_turns: int

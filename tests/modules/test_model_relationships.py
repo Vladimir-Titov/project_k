@@ -3,6 +3,7 @@ from sqlalchemy.orm import configure_mappers
 
 from app.modules.auth.models import Account, Session
 from app.modules.battles.models import Fight, FightParticipants
+from app.modules.bots.models import BotTemplateAction, BotTemplateStat
 from app.modules.characters.models import Character
 
 
@@ -10,9 +11,11 @@ def test_model_relationships_are_configured() -> None:
     configure_mappers()
 
     assert set(Account.__mapper__.relationships.keys()) == {'character', 'sessions'}
-    assert set(Character.__mapper__.relationships.keys()) == {'account'}
-    assert set(Fight.__mapper__.relationships.keys()) == set()
-    assert set(FightParticipants.__mapper__.relationships.keys()) == set()
+    assert set(Character.__mapper__.relationships.keys()) == {'account', 'character_class'}
+    assert set(Fight.__mapper__.relationships.keys()) == {'active_participant', 'winner_participant'}
+    assert set(FightParticipants.__mapper__.relationships.keys()) == {'fight', 'bot_template'}
+    assert set(BotTemplateAction.__mapper__.relationships.keys()) == {'bot_template', 'action_definition'}
+    assert set(BotTemplateStat.__mapper__.relationships.keys()) == {'bot_template', 'stat_definition'}
 
 
 def test_character_account_is_a_unique_uuid_foreign_key() -> None:
