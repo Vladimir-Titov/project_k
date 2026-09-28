@@ -1,0 +1,679 @@
+{
+  "source": "ChatGPT Image Sep 15, 2026, 04_32_17 PM.png",
+  "source_sha256": "347fdc316658edd2ffd16ab5afc3b4a7591611e3cfd337a48c8190385189e184",
+  "processing": "Coordinate extraction from the original alpha-enabled atlas, square padding, Lanczos resize, WebP export. No redrawing.",
+  "icons": [
+    {
+      "class": "mage",
+      "class_title": "Маг",
+      "name": "fireball",
+      "title": "Огненный шар",
+      "source_row": 1,
+      "source_column": 1,
+      "source_crop": [
+        0,
+        100,
+        192,
+        280
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/mage/fireball.png",
+          "bytes": 67485
+        },
+        "webp-256": {
+          "path": "webp-256/mage/fireball.webp",
+          "bytes": 21646
+        },
+        "webp-128": {
+          "path": "webp-128/mage/fireball.webp",
+          "bytes": 8166
+        }
+      }
+    },
+    {
+      "class": "mage",
+      "class_title": "Маг",
+      "name": "ice-arrow",
+      "title": "Ледяная стрела",
+      "source_row": 1,
+      "source_column": 2,
+      "source_crop": [
+        192,
+        100,
+        384,
+        280
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/mage/ice-arrow.png",
+          "bytes": 82899
+        },
+        "webp-256": {
+          "path": "webp-256/mage/ice-arrow.webp",
+          "bytes": 27282
+        },
+        "webp-128": {
+          "path": "webp-128/mage/ice-arrow.webp",
+          "bytes": 9648
+        }
+      }
+    },
+    {
+      "class": "mage",
+      "class_title": "Маг",
+      "name": "chain-lightning",
+      "title": "Цепная молния",
+      "source_row": 1,
+      "source_column": 3,
+      "source_crop": [
+        384,
+        100,
+        576,
+        280
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/mage/chain-lightning.png",
+          "bytes": 81583
+        },
+        "webp-256": {
+          "path": "webp-256/mage/chain-lightning.webp",
+          "bytes": 26386
+        },
+        "webp-128": {
+          "path": "webp-128/mage/chain-lightning.webp",
+          "bytes": 9256
+        }
+      }
+    },
+    {
+      "class": "mage",
+      "class_title": "Маг",
+      "name": "teleportation",
+      "title": "Телепортация",
+      "source_row": 1,
+      "source_column": 4,
+      "source_crop": [
+        576,
+        100,
+        768,
+        280
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/mage/teleportation.png",
+          "bytes": 82646
+        },
+        "webp-256": {
+          "path": "webp-256/mage/teleportation.webp",
+          "bytes": 24582
+        },
+        "webp-128": {
+          "path": "webp-128/mage/teleportation.webp",
+          "bytes": 9202
+        }
+      }
+    },
+    {
+      "class": "mage",
+      "class_title": "Маг",
+      "name": "magic-shield",
+      "title": "Магический щит",
+      "source_row": 1,
+      "source_column": 5,
+      "source_crop": [
+        768,
+        100,
+        960,
+        280
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/mage/magic-shield.png",
+          "bytes": 83193
+        },
+        "webp-256": {
+          "path": "webp-256/mage/magic-shield.webp",
+          "bytes": 24930
+        },
+        "webp-128": {
+          "path": "webp-128/mage/magic-shield.webp",
+          "bytes": 8828
+        }
+      }
+    },
+    {
+      "class": "mage",
+      "class_title": "Маг",
+      "name": "healing",
+      "title": "Лечение",
+      "source_row": 1,
+      "source_column": 6,
+      "source_crop": [
+        960,
+        100,
+        1152,
+        280
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/mage/healing.png",
+          "bytes": 76150
+        },
+        "webp-256": {
+          "path": "webp-256/mage/healing.webp",
+          "bytes": 22072
+        },
+        "webp-128": {
+          "path": "webp-128/mage/healing.webp",
+          "bytes": 8000
+        }
+      }
+    },
+    {
+      "class": "mage",
+      "class_title": "Маг",
+      "name": "curse",
+      "title": "Проклятие",
+      "source_row": 1,
+      "source_column": 7,
+      "source_crop": [
+        1152,
+        100,
+        1344,
+        280
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/mage/curse.png",
+          "bytes": 74683
+        },
+        "webp-256": {
+          "path": "webp-256/mage/curse.webp",
+          "bytes": 20478
+        },
+        "webp-128": {
+          "path": "webp-128/mage/curse.webp",
+          "bytes": 7592
+        }
+      }
+    },
+    {
+      "class": "mage",
+      "class_title": "Маг",
+      "name": "roots",
+      "title": "Оковы",
+      "source_row": 1,
+      "source_column": 8,
+      "source_crop": [
+        1344,
+        100,
+        1536,
+        280
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/mage/roots.png",
+          "bytes": 75161
+        },
+        "webp-256": {
+          "path": "webp-256/mage/roots.webp",
+          "bytes": 24532
+        },
+        "webp-128": {
+          "path": "webp-128/mage/roots.webp",
+          "bytes": 9130
+        }
+      }
+    },
+    {
+      "class": "warrior",
+      "class_title": "Воин",
+      "name": "strike",
+      "title": "Удар",
+      "source_row": 2,
+      "source_column": 1,
+      "source_crop": [
+        0,
+        427,
+        192,
+        606
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/warrior/strike.png",
+          "bytes": 69392
+        },
+        "webp-256": {
+          "path": "webp-256/warrior/strike.webp",
+          "bytes": 23090
+        },
+        "webp-128": {
+          "path": "webp-128/warrior/strike.webp",
+          "bytes": 8334
+        }
+      }
+    },
+    {
+      "class": "warrior",
+      "class_title": "Воин",
+      "name": "dash",
+      "title": "Рывок",
+      "source_row": 2,
+      "source_column": 2,
+      "source_crop": [
+        192,
+        427,
+        384,
+        606
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/warrior/dash.png",
+          "bytes": 63660
+        },
+        "webp-256": {
+          "path": "webp-256/warrior/dash.webp",
+          "bytes": 22762
+        },
+        "webp-128": {
+          "path": "webp-128/warrior/dash.webp",
+          "bytes": 8172
+        }
+      }
+    },
+    {
+      "class": "warrior",
+      "class_title": "Воин",
+      "name": "block",
+      "title": "Блок",
+      "source_row": 2,
+      "source_column": 3,
+      "source_crop": [
+        384,
+        427,
+        576,
+        606
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/warrior/block.png",
+          "bytes": 79448
+        },
+        "webp-256": {
+          "path": "webp-256/warrior/block.webp",
+          "bytes": 24522
+        },
+        "webp-128": {
+          "path": "webp-128/warrior/block.webp",
+          "bytes": 8636
+        }
+      }
+    },
+    {
+      "class": "warrior",
+      "class_title": "Воин",
+      "name": "rage",
+      "title": "Ярость",
+      "source_row": 2,
+      "source_column": 4,
+      "source_crop": [
+        576,
+        427,
+        768,
+        606
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/warrior/rage.png",
+          "bytes": 71203
+        },
+        "webp-256": {
+          "path": "webp-256/warrior/rage.webp",
+          "bytes": 20802
+        },
+        "webp-128": {
+          "path": "webp-128/warrior/rage.webp",
+          "bytes": 7740
+        }
+      }
+    },
+    {
+      "class": "warrior",
+      "class_title": "Воин",
+      "name": "empower",
+      "title": "Усиление",
+      "source_row": 2,
+      "source_column": 5,
+      "source_crop": [
+        768,
+        427,
+        960,
+        606
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/warrior/empower.png",
+          "bytes": 66224
+        },
+        "webp-256": {
+          "path": "webp-256/warrior/empower.webp",
+          "bytes": 21008
+        },
+        "webp-128": {
+          "path": "webp-128/warrior/empower.webp",
+          "bytes": 7354
+        }
+      }
+    },
+    {
+      "class": "warrior",
+      "class_title": "Воин",
+      "name": "protect-allies",
+      "title": "Защита союзников",
+      "source_row": 2,
+      "source_column": 6,
+      "source_crop": [
+        960,
+        427,
+        1152,
+        606
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/warrior/protect-allies.png",
+          "bytes": 82732
+        },
+        "webp-256": {
+          "path": "webp-256/warrior/protect-allies.webp",
+          "bytes": 25036
+        },
+        "webp-128": {
+          "path": "webp-128/warrior/protect-allies.webp",
+          "bytes": 9204
+        }
+      }
+    },
+    {
+      "class": "warrior",
+      "class_title": "Воин",
+      "name": "armor-break",
+      "title": "Пробитие брони",
+      "source_row": 2,
+      "source_column": 7,
+      "source_crop": [
+        1152,
+        427,
+        1344,
+        606
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/warrior/armor-break.png",
+          "bytes": 70601
+        },
+        "webp-256": {
+          "path": "webp-256/warrior/armor-break.webp",
+          "bytes": 19804
+        },
+        "webp-128": {
+          "path": "webp-128/warrior/armor-break.webp",
+          "bytes": 7266
+        }
+      }
+    },
+    {
+      "class": "warrior",
+      "class_title": "Воин",
+      "name": "bleeding",
+      "title": "Кровотечение",
+      "source_row": 2,
+      "source_column": 8,
+      "source_crop": [
+        1344,
+        427,
+        1536,
+        606
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/warrior/bleeding.png",
+          "bytes": 55806
+        },
+        "webp-256": {
+          "path": "webp-256/warrior/bleeding.webp",
+          "bytes": 19732
+        },
+        "webp-128": {
+          "path": "webp-128/warrior/bleeding.webp",
+          "bytes": 7118
+        }
+      }
+    },
+    {
+      "class": "adventurer",
+      "class_title": "Путешественник",
+      "name": "shot",
+      "title": "Выстрел",
+      "source_row": 3,
+      "source_column": 1,
+      "source_crop": [
+        0,
+        746,
+        192,
+        934
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/adventurer/shot.png",
+          "bytes": 58851
+        },
+        "webp-256": {
+          "path": "webp-256/adventurer/shot.webp",
+          "bytes": 25198
+        },
+        "webp-128": {
+          "path": "webp-128/adventurer/shot.webp",
+          "bytes": 9040
+        }
+      }
+    },
+    {
+      "class": "adventurer",
+      "class_title": "Путешественник",
+      "name": "multi-shot",
+      "title": "Множественный выстрел",
+      "source_row": 3,
+      "source_column": 2,
+      "source_crop": [
+        192,
+        746,
+        384,
+        934
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/adventurer/multi-shot.png",
+          "bytes": 73643
+        },
+        "webp-256": {
+          "path": "webp-256/adventurer/multi-shot.webp",
+          "bytes": 27058
+        },
+        "webp-128": {
+          "path": "webp-128/adventurer/multi-shot.webp",
+          "bytes": 9404
+        }
+      }
+    },
+    {
+      "class": "adventurer",
+      "class_title": "Путешественник",
+      "name": "stealth",
+      "title": "Скрытность",
+      "source_row": 3,
+      "source_column": 3,
+      "source_crop": [
+        384,
+        746,
+        576,
+        934
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/adventurer/stealth.png",
+          "bytes": 67559
+        },
+        "webp-256": {
+          "path": "webp-256/adventurer/stealth.webp",
+          "bytes": 20638
+        },
+        "webp-128": {
+          "path": "webp-128/adventurer/stealth.webp",
+          "bytes": 7544
+        }
+      }
+    },
+    {
+      "class": "adventurer",
+      "class_title": "Путешественник",
+      "name": "haste",
+      "title": "Ускорение",
+      "source_row": 3,
+      "source_column": 4,
+      "source_crop": [
+        576,
+        746,
+        768,
+        934
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/adventurer/haste.png",
+          "bytes": 79682
+        },
+        "webp-256": {
+          "path": "webp-256/adventurer/haste.webp",
+          "bytes": 25656
+        },
+        "webp-128": {
+          "path": "webp-128/adventurer/haste.webp",
+          "bytes": 8730
+        }
+      }
+    },
+    {
+      "class": "adventurer",
+      "class_title": "Путешественник",
+      "name": "trap",
+      "title": "Ловушка",
+      "source_row": 3,
+      "source_column": 5,
+      "source_crop": [
+        768,
+        746,
+        960,
+        934
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/adventurer/trap.png",
+          "bytes": 71879
+        },
+        "webp-256": {
+          "path": "webp-256/adventurer/trap.webp",
+          "bytes": 22780
+        },
+        "webp-128": {
+          "path": "webp-128/adventurer/trap.webp",
+          "bytes": 8494
+        }
+      }
+    },
+    {
+      "class": "adventurer",
+      "class_title": "Путешественник",
+      "name": "scouting",
+      "title": "Разведка",
+      "source_row": 3,
+      "source_column": 6,
+      "source_crop": [
+        960,
+        746,
+        1152,
+        934
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/adventurer/scouting.png",
+          "bytes": 59464
+        },
+        "webp-256": {
+          "path": "webp-256/adventurer/scouting.webp",
+          "bytes": 15636
+        },
+        "webp-128": {
+          "path": "webp-128/adventurer/scouting.webp",
+          "bytes": 5916
+        }
+      }
+    },
+    {
+      "class": "adventurer",
+      "class_title": "Путешественник",
+      "name": "poisoning",
+      "title": "Отравление",
+      "source_row": 3,
+      "source_column": 7,
+      "source_crop": [
+        1152,
+        746,
+        1344,
+        934
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/adventurer/poisoning.png",
+          "bytes": 61797
+        },
+        "webp-256": {
+          "path": "webp-256/adventurer/poisoning.webp",
+          "bytes": 22462
+        },
+        "webp-128": {
+          "path": "webp-128/adventurer/poisoning.webp",
+          "bytes": 7860
+        }
+      }
+    },
+    {
+      "class": "adventurer",
+      "class_title": "Путешественник",
+      "name": "survival",
+      "title": "Выживание",
+      "source_row": 3,
+      "source_column": 8,
+      "source_crop": [
+        1344,
+        746,
+        1536,
+        934
+      ],
+      "files": {
+        "png-256": {
+          "path": "png-256/adventurer/survival.png",
+          "bytes": 59721
+        },
+        "webp-256": {
+          "path": "webp-256/adventurer/survival.webp",
+          "bytes": 20562
+        },
+        "webp-128": {
+          "path": "webp-128/adventurer/survival.webp",
+          "bytes": 7270
+        }
+      }
+    }
+  ]
+}

@@ -7,7 +7,7 @@ from alembic.operations import Operations
 
 
 def test_migration_renders_schema_seed_and_backfill():
-    path = Path(__file__).parents[3] / 'alembic/versions/0002_locations.py'
+    path = Path(__file__).parents[3] / 'alembic/versions/0005_locations.py'
     spec = importlib.util.spec_from_file_location('locations_migration', path)
     migration = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(migration)

@@ -44,6 +44,7 @@ from app.modules.characters.models import (
     ClassStat,
 )
 from app.modules.content.models import ActionDefinition, ActionEffect, EffectDefinition, EffectRule
+from app.modules.locations.models import Location, LocationTransition
 from app.modules.stats.enums import StatKind
 from app.modules.stats.models import StatDefinition
 
@@ -111,6 +112,8 @@ def test_admin_registers_all_models_and_relationship_fields() -> None:
     views = create_admin_views(password_hasher)
 
     expected_models = {
+        Location,
+        LocationTransition,
         Account,
         Session,
         Character,
