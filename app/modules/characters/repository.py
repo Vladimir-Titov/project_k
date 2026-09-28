@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy import select, update
@@ -87,6 +88,20 @@ class CharacterActionRepository(EntityRepository[CharacterAction]):
 
 class CharacterRepository(EntityRepository[Character]):
     entity = Character
+
+    async def get_for_update(self, character_id: UUID) -> Character | None:
+        row = await self.fetchrow(select(self.table).where(self.table.c.id == character_id).with_for_update())
+        return self._to_entity(row) if row is not None else None
+
+    async def set_location(self, character_id: UUID, location_id: UUID, next_movement_at: datetime) -> None:
+        await self.execute(
+            update(self.table)
+            .where(self.table.c.id == character_id)
+            .values(
+                location_id=location_id,
+                next_movement_at=next_movement_at,
+            )
+        )
 
     async def create_if_available(
         self,

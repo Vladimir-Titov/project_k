@@ -76,8 +76,11 @@ class FightService:
     async def create_fight(self, attacker_id: UUID, target_id: UUID) -> Fight:
         if attacker_id == target_id:
             raise FightTargetNotFoundError
-        attacker = await self.repositories.characters.get_by_id(attacker_id)
-        target = await self.repositories.characters.get_by_id(target_id)
+        locked = {}
+        for character_id in sorted((attacker_id, target_id)):
+            locked[character_id] = await self.repositories.characters.get_for_update(character_id)
+        attacker = locked[attacker_id]
+        target = locked[target_id]
         if attacker is None or attacker.is_archived or target is None or target.is_archived:
             raise FightTargetNotFoundError
         if await self.repositories.fight_participants.get_active_for_source('character', target.id):
@@ -113,7 +116,7 @@ class FightService:
         return result
 
     async def create_bot_fight(self, *, attacker_id: UUID, bot_template_id: UUID) -> Fight:
-        attacker = await self.repositories.characters.get_by_id(attacker_id)
+        attacker = await self.repositories.characters.get_for_update(attacker_id)
         template = await self.repositories.bot_templates.get_by_id(bot_template_id)
         if (
             attacker is None

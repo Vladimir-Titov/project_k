@@ -113,6 +113,9 @@ class FakeCharacterRepository:
         self.characters[character.id] = character
         return character
 
+    async def get_for_update(self, entity_id: UUID) -> Character | None:
+        return self.characters.get(entity_id)
+
     async def get_by_id(self, entity_id: UUID) -> Character | None:
         return self.characters.get(entity_id)
 

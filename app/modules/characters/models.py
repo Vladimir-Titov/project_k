@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 from uuid import UUID
@@ -5,7 +6,9 @@ from uuid import UUID
 from sqlalchemy import Column, Numeric, UniqueConstraint
 from sqlmodel import Field, Relationship
 
-from app.core.db.models import TableBase
+from app.core.db.models import TableBase, UTCDateTime
+from app.modules.locations.constants import DEFAULT_LOCATION_ID
+from app.modules.locations.models import Location
 
 if TYPE_CHECKING:
     from app.modules.auth.models import Account
@@ -74,6 +77,9 @@ class Character(TableBase, table=True):
         nullable=False,
         foreign_key='frontiers.character_classes.id',
     )
+    location_id: UUID = Field(default=DEFAULT_LOCATION_ID, index=True, foreign_key='frontiers.locations.id')
+    next_movement_at: datetime | None = Field(default=None, nullable=True, sa_type=UTCDateTime)
+    location: Location = Relationship()
     account: Account = Relationship(back_populates='character')
     character_class: CharacterClass = Relationship()
 

@@ -30,6 +30,12 @@ from app.modules.characters.exceptions import (
     NicknameAlreadyExistsError,
 )
 from app.modules.game_context.exceptions import CharacterRequiredError, InvalidGameSessionError
+from app.modules.locations.exceptions import (
+    InvalidMovementSpeedError,
+    LocationUnavailableError,
+    MovementCooldownError,
+    TransitionUnavailableError,
+)
 
 type ExceptionHandler = Callable[[Request, Exception], Awaitable[JSONResponse]]
 
@@ -43,6 +49,10 @@ def _json_error_handler(status_code: int, detail: str) -> ExceptionHandler:
 
 def register_exception_handlers(application: FastAPI) -> None:
     mappings: tuple[tuple[type[Exception], int, str], ...] = (
+        (LocationUnavailableError, 409, 'location_unavailable'),
+        (TransitionUnavailableError, 409, 'transition_unavailable'),
+        (MovementCooldownError, 409, 'movement_cooldown'),
+        (InvalidMovementSpeedError, 409, 'invalid_movement_speed'),
         (AuthenticationRequiredError, status.HTTP_401_UNAUTHORIZED, 'Not authenticated'),
         (InvalidAccessTokenError, status.HTTP_401_UNAUTHORIZED, 'Invalid or expired access token'),
         (InvalidRefreshTokenError, status.HTTP_401_UNAUTHORIZED, 'Invalid or expired refresh token'),

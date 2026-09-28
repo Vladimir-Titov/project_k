@@ -190,7 +190,7 @@ async def test_bot_fight_uses_new_spawn_id_for_each_fight() -> None:
     )
     hero = SimpleNamespace(id=ATTACKER_ID, is_archived=False)
     repositories = SimpleNamespace(
-        characters=SimpleNamespace(get_by_id=AsyncMock(return_value=hero)),
+        characters=SimpleNamespace(get_for_update=AsyncMock(return_value=hero)),
         bot_templates=SimpleNamespace(get_by_id=AsyncMock(return_value=template)),
         bot_template_actions=SimpleNamespace(list_for_template=AsyncMock(return_value=[SimpleNamespace()])),
     )

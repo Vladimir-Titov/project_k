@@ -29,6 +29,7 @@ from app.modules.content.repository import (
     EffectDefinitionRepository,
     EffectRuleRepository,
 )
+from app.modules.locations.repository import LocationRepository, LocationTransitionRepository
 from app.modules.stats.repository import StatDefinitionRepository
 
 
@@ -64,6 +65,14 @@ class RepositoryContainer:
 
 
 class Repositories(RepositoryContainer):
+    @property
+    def locations(self) -> LocationRepository:
+        return self.get_repository(LocationRepository)
+
+    @property
+    def location_transitions(self) -> LocationTransitionRepository:
+        return self.get_repository(LocationTransitionRepository)
+
     @property
     def bot_templates(self) -> BotTemplateRepository:
         return self.get_repository(BotTemplateRepository)

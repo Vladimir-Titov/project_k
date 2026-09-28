@@ -1,0 +1,612 @@
+{
+  "version": 1,
+  "date": "2026-09-27",
+  "style": "Реалистичное средневековое фэнтези",
+  "generator": "built-in image_gen",
+  "assets": [
+    {
+      "id": "loc-teren-city",
+      "name": "Велдар — Медный двор",
+      "category": "location",
+      "world": "teren",
+      "file": "images/loc-teren-city-v3.png",
+      "prompt": "Use case: precise-object-edit. Edit the reference realistic medieval town square image. Preserve the exact eye-level plaza composition, shops and blacksmith on left, market stalls on right, belltower and street exit, materials, warm natural daylight and realistic medieval style. Replace ONLY the foreground female NPC with one male starter NPC, a veteran quartermaster named Maren Vel: about 45, weathered approachable face, short dark hair with grey at temples, neat short beard, plain mail collar under a worn rust-brown wool surcoat, leather belt with keys and a closed supply ledger, sheathed modest sword. He stands in the right third of the square a few steps farther away than the woman, full body including boots visible, occupies about 50-55 percent of image height, body facing the player, calm practical welcoming stance. Keep the center walkable and all shop entrances unobscured. No woman in the former foreground position. No lavish armor, no crown, no text, no UI, no watermark. Single landscape image.",
+      "status": "generated",
+      "reference": "images/loc-teren-city-v2.png"
+    },
+    {
+      "id": "loc-sairan-city",
+      "name": "Велсар — Железный двор",
+      "category": "location",
+      "world": "sairan",
+      "file": "images/loc-sairan-city-v2.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 playable browser RPG city square illustration. Reference is spatial and style guide; preserve exact eye level, open center, shop and forge on left, market stalls right, tower and street exit back. Create sister city Velsar in independent Sairan: smoky grey limestone, black iron details, muted teal awnings, dark slate roofs, wet paving and cool overcast daylight; tower has three small bells. On right third stands ONE male starter quartermaster Naren Veis, about 50, broad face, short sandy grey hair and moustache, dark quilted jacket with mail collar and faded teal sash, ledger and keys at belt, sheathed sword. Fully visible boots and head, 50 percent image height, not blocking shops. This is a distinct man from reference. No female foreground NPC, no writing or UI.",
+      "reference": "images/loc-teren-city-v3.png",
+      "status": "generated"
+    },
+    {
+      "id": "loc-teren-suburb",
+      "name": "Нижние сады",
+      "category": "location",
+      "world": "teren",
+      "file": "images/loc-teren-suburb.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Medieval orchard outside city walls, irrigation ditch, low stone garden walls, small water lifting tower, modest farmhouse and beehives, apple trees and distant city roofs, warm natural daylight.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-sairan-suburb",
+      "name": "Нижние дворы",
+      "category": "location",
+      "world": "sairan",
+      "file": "images/loc-sairan-suburb.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Medieval pastures outside city walls, old irrigation ditch and small water lifting tower, sparse old fruit trees, wooden drying sheds, patched fences and distant city roofs, cool natural daylight.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-teren-forest",
+      "name": "Роща тихих колокольцев",
+      "category": "location",
+      "world": "teren",
+      "file": "images/loc-teren-forest.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Temperate medieval woodland with a forked oak above a shallow stream, narrow footpath, small copper trail bells tied on branches, fern and moss, green filtered daylight, quiet and believable.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-sairan-forest",
+      "name": "Роща глухих ветвей",
+      "category": "location",
+      "world": "sairan",
+      "file": "images/loc-sairan-forest.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Temperate damp woodland with a forked oak above a shallow stream, narrow footpath, small iron trail bells wrapped in cloth and knotted cord on branches, reeds and dark moss, cool misty daylight.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-teren-quarry",
+      "name": "Белый уступ",
+      "category": "location",
+      "world": "teren",
+      "file": "images/loc-teren-quarry.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Working medieval pale limestone quarry with terraced cliff, wooden lifting cage over a shaft, winch and rope, piles of stone, old hand tools, pale dusty daylight, believable scale.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-sairan-quarry",
+      "name": "Дымный уступ",
+      "category": "location",
+      "world": "sairan",
+      "file": "images/loc-sairan-quarry.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Old working medieval quarry cut in smoky grey wet limestone, terraced cliff, wooden lifting cage over a shaft, winch and rope, small resin lamps and dark damp retaining walls, cool daylight.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-teren-ruins",
+      "name": "Старый дозор",
+      "category": "location",
+      "world": "teren",
+      "file": "images/loc-teren-ruins.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Abandoned medieval watch fortress, siege damage and old scorch marks, broken stair ending above collapsed courtyard, empty arches, weeds, pale stone and rusted iron, melancholy afternoon daylight.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-sairan-ruins",
+      "name": "Пустой дозор",
+      "category": "location",
+      "world": "sairan",
+      "file": "images/loc-sairan-ruins.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Abandoned medieval watch fortress, collapsed portal accident with locally glassy dark stone, broken stair ending above collapsed courtyard, empty arches, sparse weeds, cool daylight, no giant magic vortex.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-teren-gates",
+      "name": "Пепельная лощина",
+      "category": "location",
+      "world": "teren",
+      "file": "images/loc-teren-gates.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Medieval ravine with dry grey ash and russet heather, maintained large stone portal arch at road end, several low stone buttresses joined by restrained copper fittings, subtle warm glow within arch, repair scaffold and supply cart, natural daylight.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-sairan-gates",
+      "name": "Стылый распадок",
+      "category": "location",
+      "world": "sairan",
+      "file": "images/loc-sairan-gates.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: wide 16:9 game location, single environment illustration. Medieval ravine with frost on dark grass, maintained large stone portal arch at road end, several low stone buttresses joined by blackened iron fittings, subtle cool glow within arch, repair scaffold and supply cart, cold natural daylight.",
+      "status": "generated"
+    },
+    {
+      "id": "loc-borderland",
+      "name": "Серая межа",
+      "category": "location",
+      "world": "shared",
+      "file": "images/loc-borderland.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Wide 16:9 landscape. A contested medieval frontier valley in an independent fantasy world. Dry grey riverbed and ruined stone ford in foreground, fallen boundary stone with eroded abstract non-readable carvings, ancient road, two equally modest portal arches on distant opposite sides of valley, one warm and one cool faint light, scattered abandoned wagon timbers, subdued grass and cloudy daylight. No active battle, no objective markers, no fortified safe towns.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-maren",
+      "name": "Марен Вель",
+      "category": "npc",
+      "world": "teren",
+      "file": "images/npc-maren.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Square dialogue portrait of Maren Vel, the male quartermaster from the reference square image, preserve his facial identity and clothing. About 45, short dark hair greying at temples, neat short beard, weathered approachable face, mail collar under rust-brown wool surcoat, ledger held naturally. Waist up, centered, natural hands, soft square background with no other dominant people.",
+      "reference": "images/loc-teren-city-v3.png",
+      "status": "generated"
+    },
+    {
+      "id": "npc-naren",
+      "name": "Нарен Вейс",
+      "category": "npc",
+      "world": "sairan",
+      "file": "images/npc-naren.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Square dialogue portrait of Naren Veis, the male quartermaster from the reference square image, preserve his facial identity and clothing. About 50, broad face, short sandy-grey hair and moustache, dark quilted jacket with mail collar and muted teal sash, old keys at belt, holding closed ledger. Waist up, centered, natural hands, blurred grey stone square behind.",
+      "reference": "images/loc-sairan-city-v2.png",
+      "status": "generated"
+    },
+    {
+      "id": "npc-oren",
+      "name": "Орен Таль",
+      "category": "npc",
+      "world": "teren",
+      "file": "images/npc-oren.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Older male orchard gardener, sun weathered face, grey beard, plain wool vest over linen, clean bandage around one hand, worn pruning tool at belt, orchard softly blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-orsa",
+      "name": "Орса Тей",
+      "category": "npc",
+      "world": "sairan",
+      "file": "images/npc-orsa.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Strong middle-aged woman managing farmyards, dark hair tied back, thoughtful stern face, grey wool clothes, rolled sleeves, leather work gloves holding short coil of fence rope, pasture softly blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-ilva",
+      "name": "Ильва Рен",
+      "category": "npc",
+      "world": "teren",
+      "file": "images/npc-ilva.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Female forester aged about 35, freckled weathered face, auburn hair tied back, practical moss green wool hood down, leather shoulder strap and tiny copper trail bell, forest softly blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-irven",
+      "name": "Ирвен Рэс",
+      "category": "npc",
+      "world": "sairan",
+      "file": "images/npc-irven.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Male forest resin collector about 40, wiry with dark stubble, patched grey green wool, little resin collecting pot at belt and knotted cloth cord in hand, reserved expression, damp forest blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-bren",
+      "name": "Брен Кард",
+      "category": "npc",
+      "world": "teren",
+      "file": "images/npc-bren.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Older male quarry winch master, broad weathered face and grey moustache, dusty pale work tunic, simple leather hand brace with clearly crafted wooden finger prostheses resting on workbench, practical medieval craft not robotics, quarry blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-brena",
+      "name": "Брена Карс",
+      "category": "npc",
+      "world": "sairan",
+      "file": "images/npc-brena.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Middle-aged female quarry forewoman, broad sturdy face, tied greying hair, dusty dark work tunic and teal neck cloth, holds a small historical brass ear trumpet in one hand, direct no-nonsense gaze, quarry blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-sevran",
+      "name": "Севран Даль",
+      "category": "npc",
+      "world": "teren",
+      "file": "images/npc-sevran.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Middle-aged male record keeper, narrow thoughtful face, short beard, worn brown coat, ink stained fingers holding a closed plain ledger, faded rust scarf, ruined fortress softly blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-sevra",
+      "name": "Севра Дас",
+      "category": "npc",
+      "world": "sairan",
+      "file": "images/npc-sevra.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Older female retired guard, short iron-grey hair, lined face and healed cheek scar, worn mail collar and dark wool cloak, holding old plain identity token, restrained dignity, grey ruined fortress blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-edra",
+      "name": "Эдра Вейн",
+      "category": "npc",
+      "world": "teren",
+      "file": "images/npc-edra.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Female portal keeper about 40, dark tied hair and old healed burn mark crossing one eyebrow, practical charcoal work coat with copper clasps and rust scarf, holds small stone measuring tool, subtle portal light softly blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-edren",
+      "name": "Эдрен Вайс",
+      "category": "npc",
+      "world": "sairan",
+      "file": "images/npc-edren.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Male portal keeper about 45, weathered thoughtful face, dark hair turning grey, repeatedly mended dark wool cloak with black iron clasp and muted teal lining, holds simple stone measuring tool, cool portal light blurred behind.",
+      "status": "generated"
+    },
+    {
+      "id": "npc-tavr",
+      "name": "Тавр Беззнамённый",
+      "category": "npc",
+      "world": "shared",
+      "file": "images/npc-tavr.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game dialogue portrait. Single person waist-up, clear face, natural proportions and hands, centered with generous headroom. Elderly neutral letter intermediary, weathered human face, mixed grey hair and beard, patched undyed wool coat with no faction insignia, plain leather pouch containing folded sealed letters without readable text, dry riverbed blurred behind. Cautious compassionate expression.",
+      "status": "generated"
+    },
+    {
+      "id": "mob-rat",
+      "name": "Складская крыса",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-rat.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single large but believable brown warehouse rat, coarse fur, alert whiskers, four anatomically correct feet on granary stone beside scattered grain.",
+      "level": 1,
+      "status": "generated"
+    },
+    {
+      "id": "mob-dog",
+      "name": "Одичавший пёс",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-dog.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single lean feral medieval village dog, rough brown-grey fur, wary aggressive stance, no collar, cellar stones behind, no gore.",
+      "level": 2,
+      "status": "generated"
+    },
+    {
+      "id": "mob-rodent",
+      "name": "Полевой грызун",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-rodent.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single robust vole-like field rodent, short tail, rounded ears, coarse russet fur, near gnawed root and grass on farmland soil. Clearly distinct from a long-tailed rat.",
+      "level": 1,
+      "status": "generated"
+    },
+    {
+      "id": "mob-boar",
+      "name": "Молодой кабан",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-boar.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single young wild boar, brown bristles, small tusks, sturdy natural anatomy, churned orchard earth and low foliage.",
+      "level": 2,
+      "status": "generated"
+    },
+    {
+      "id": "mob-wolf",
+      "name": "Серый волк",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-wolf.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single grey wolf, believable natural anatomy, thick mottled coat, tense alert stance, mossy forest ground.",
+      "level": 2,
+      "status": "generated"
+    },
+    {
+      "id": "mob-spider",
+      "name": "Корневой паук",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-spider.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single fantasy root spider about dog sized, eight clearly articulated legs, bark brown carapace, subtle moss camouflage, forest roots behind, not a humanoid.",
+      "level": 3,
+      "status": "generated"
+    },
+    {
+      "id": "mob-bat",
+      "name": "Пещерный летун",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-bat.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single large cave bat with biologically plausible membranous wings spread, brown-grey fur and small face, framed fully with wing tips visible, dark quarry rock behind.",
+      "level": 3,
+      "status": "generated"
+    },
+    {
+      "id": "mob-tick",
+      "name": "Каменный клещ",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-tick.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single fantasy stone tick about knee high, eight stocky articulated legs, squat low body with limestone-crusted shell and small mouthparts, gravel quarry floor. Not a crab or humanoid.",
+      "level": 4,
+      "status": "generated"
+    },
+    {
+      "id": "mob-looter",
+      "name": "Мародёр руин",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-looter.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single human medieval scavenger bandit in patched brown wool and mismatched leather, dull short blade and stolen sack, face visible, full figure, ruined courtyard behind, no faction insignia.",
+      "level": 5,
+      "status": "generated"
+    },
+    {
+      "id": "mob-empty-armor",
+      "name": "Пустой латник",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-empty-armor.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single empty animated medieval suit of battered plate armor, hollow dark helmet clearly no face, old short sword, muted faint magical joints, standing in ruined keep, believable armor construction, no skull or undead body.",
+      "level": 6,
+      "status": "generated"
+    },
+    {
+      "id": "mob-ash-hound",
+      "name": "Зольный гончак",
+      "category": "mob",
+      "world": "teren",
+      "file": "images/mob-ash-hound.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single fantasy hound with believable lean canine anatomy, charcoal hide and ash dust with very faint ember fissures, no exposed flesh, dry grey ravine behind.",
+      "level": 6,
+      "status": "generated"
+    },
+    {
+      "id": "mob-frost-hound",
+      "name": "Инеевый гончак",
+      "category": "mob",
+      "world": "sairan",
+      "file": "images/mob-frost-hound.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single fantasy hound with believable lean canine anatomy, dark grey coat tipped with white rime and breath mist, no exposed flesh, frosty ravine behind.",
+      "level": 6,
+      "status": "generated"
+    },
+    {
+      "id": "mob-rift-moth",
+      "name": "Разломный мотылёк",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-rift-moth.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single large fantasy moth, symmetrical pale translucent wings with subtle iridescent ring patterns, furry small body and six legs, fully visible wings, restrained portal glow against grey stone behind.",
+      "level": 6,
+      "status": "generated"
+    },
+    {
+      "id": "mob-jackal",
+      "name": "Межевой шакал",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-jackal.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single grey-gold jackal, slender natural anatomy, black saddle fur, large alert ears, dry stony riverbed in background.",
+      "level": 3,
+      "status": "generated"
+    },
+    {
+      "id": "mob-wandering-guard",
+      "name": "Бродячий страж",
+      "category": "mob",
+      "world": "shared",
+      "file": "images/mob-wandering-guard.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square enemy encounter illustration. Single full subject centered, identifiable silhouette, all limbs within frame, simple subdued background. A single ancient human-sized medieval stone and iron guardian construct, weathered slab body, simple faceless helmet shape and worn long-handled hammer, no faction signs, dry frontier riverbed, grounded subtle fantasy not sci-fi robot.",
+      "level": 6,
+      "status": "generated"
+    },
+    {
+      "id": "class-warrior",
+      "name": "Воин",
+      "category": "class",
+      "world": "shared",
+      "file": "images/class-warrior.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square class selection illustration, single full-body character, head and feet inside frame, quiet stone courtyard background. An adult medieval warrior in practical mail over quilted gambeson, plain wooden round shield and modest short sword, weathered wool rust brown accents, steady grounded stance, no huge pauldrons.",
+      "status": "generated"
+    },
+    {
+      "id": "class-mage",
+      "name": "Маг",
+      "category": "class",
+      "world": "shared",
+      "file": "images/class-mage.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square class selection illustration, single full-body character, head and feet inside frame, quiet stone courtyard background. An adult female medieval traveling mage in practical layered wool coat, leather belt and satchel, short ashwood staff capped by one small dull translucent stone, chalk on fingertips, barely visible pale arcane light, no wizard hat or extravagant robes.",
+      "status": "generated"
+    },
+    {
+      "id": "class-rogue",
+      "name": "Разбойник",
+      "category": "class",
+      "world": "shared",
+      "file": "images/class-rogue.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square class selection illustration, single full-body character, head and feet inside frame, quiet stone courtyard background. An adult medieval scout in practical layered leather over linen, two small utilitarian blades, medicine pouch, uncovered weathered face, muted grey green clothes, neutral grounded stance, no hood hiding face, no acrobatics.",
+      "status": "generated"
+    },
+    {
+      "id": "item-sword",
+      "name": "Обычный короткий меч",
+      "category": "item",
+      "world": "shared",
+      "file": "images/item-sword.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square inventory icon illustration, single equipment item large and centered, fully inside frame, quiet plain charcoal background, soft studio-like natural side light, readable at small size. A single modest medieval short iron sword with repaired leather grip and plain crossguard.",
+      "status": "generated"
+    },
+    {
+      "id": "item-staff",
+      "name": "Посох ученика",
+      "category": "item",
+      "world": "shared",
+      "file": "images/item-staff.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square inventory icon illustration, single equipment item large and centered, fully inside frame, quiet plain charcoal background, soft studio-like natural side light, readable at small size. A single short ashwood apprentice staff with leather grip, small dull clear mineral fastened by copper at its tip.",
+      "status": "generated"
+    },
+    {
+      "id": "item-knives",
+      "name": "Хозяйственные ножи",
+      "category": "item",
+      "world": "shared",
+      "file": "images/item-knives.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square inventory icon illustration, single equipment item large and centered, fully inside frame, quiet plain charcoal background, soft studio-like natural side light, readable at small size. A pair of modest medieval utility knives arranged together as one equipment item, worn iron blades and riveted wooden grips.",
+      "status": "generated"
+    },
+    {
+      "id": "item-warrior-vest",
+      "name": "Клёпаный жилет",
+      "category": "item",
+      "world": "shared",
+      "file": "images/item-warrior-vest.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square inventory icon illustration, single equipment item large and centered, fully inside frame, quiet plain charcoal background, soft studio-like natural side light, readable at small size. One practical medieval riveted leather vest over a quilted backing, visibly repaired strap, no person or mannequin.",
+      "status": "generated"
+    },
+    {
+      "id": "item-mage-coat",
+      "name": "Дорожная куртка мага",
+      "category": "item",
+      "world": "shared",
+      "file": "images/item-mage-coat.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square inventory icon illustration, single equipment item large and centered, fully inside frame, quiet plain charcoal background, soft studio-like natural side light, readable at small size. One practical medieval wool traveling mage coat with modest leather cuffs, patched seam and small copper clasp, no person or mannequin.",
+      "status": "generated"
+    },
+    {
+      "id": "item-scout-armor",
+      "name": "Нагрудник разведчика",
+      "category": "item",
+      "world": "shared",
+      "file": "images/item-scout-armor.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square inventory icon illustration, single equipment item large and centered, fully inside frame, quiet plain charcoal background, soft studio-like natural side light, readable at small size. One practical dark brown medieval layered leather scout cuirass, plain straps and small utility pouch, no person or mannequin.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-warrior-basic",
+      "name": "Простой удар",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-warrior-basic.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. A worn short sword making a faint small horizontal slash, restrained grey steel.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-warrior-light",
+      "name": "Рубящий удар",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-warrior-light.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. A short sword making one clear diagonal cutting arc, restrained bronze sparks.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-warrior-heavy",
+      "name": "Тяжёлый удар",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-warrior-heavy.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. A heavy downward short sword blow striking stone with a few chips, bold readable composition.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-warrior-buff",
+      "name": "Укрепление",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-warrior-buff.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. A sturdy wooden shield surrounded by a subtle warm protective outline, no characters.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-warrior-debuff",
+      "name": "Ослабляющий удар",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-warrior-debuff.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. A dented enemy iron gauntlet loosening its grip on a sword, muted rust magical marks, one clear subject.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-mage-basic",
+      "name": "Искра",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-mage-basic.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. One very small pale blue magical spark above a rough staff tip, restrained glow.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-mage-light",
+      "name": "Магический разряд",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-mage-light.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. One bright narrow blue-white magical bolt leaving a small staff crystal.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-mage-heavy",
+      "name": "Раскол",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-mage-heavy.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. One mineral crystal split by a concentrated white-blue magical burst, strong readable silhouette.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-mage-buff",
+      "name": "Наполнение",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-mage-buff.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. Two cupped natural human hands enclosing a soft golden magical light, single symbolic composition.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-mage-debuff",
+      "name": "Истощение",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-mage-debuff.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. An old shield with a dim violet fissure across its surface and fading glow, symbol of weakened defense.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-rogue-basic",
+      "name": "Укол",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-rogue-basic.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. One plain utility dagger making a small straight thrust, subtle silver motion accent.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-rogue-light",
+      "name": "Быстрый порез",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-rogue-light.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. One sharp dagger with a clear short silver cutting arc, quiet dark background.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-rogue-heavy",
+      "name": "Глубокий выпад",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-rogue-heavy.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. Two practical daggers converging on one point with a bold sharp glint, no blood or body.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-rogue-buff",
+      "name": "Сосредоточенность",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-rogue-buff.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. A single attentive human eye in a cropped face with a restrained amber glint, focused expression, no target reticle.",
+      "status": "generated"
+    },
+    {
+      "id": "skill-rogue-debuff",
+      "name": "Отравление",
+      "category": "skill",
+      "world": "shared",
+      "file": "images/skill-rogue-debuff.png",
+      "prompt": "Use case: stylized-concept. High quality realistic medieval fantasy game illustration, believable anatomy and architecture, restrained painterly realism, natural materials, weathering, cinematic but legible daylight, subtle magic only where explicitly requested. Original setting Teren and Sairan; no existing franchise motifs. No text, lettering, labels, border, collage, watermark, UI or modern objects. Asset type: square game ability icon, one simple central motif filling frame, high silhouette readability at 128px, deep charcoal background, realistic medieval fantasy materials, restrained symbolic magic. A plain small knife blade with one green poison drop beside a tiny stoppered vial, readable close-up.",
+      "status": "generated"
+    }
+  ]
+}

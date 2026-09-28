@@ -33,6 +33,7 @@ from app.modules.characters.models import (
 )
 from app.modules.content.expressions import InvalidExpressionError, validate_expression
 from app.modules.content.models import ActionDefinition, ActionEffect, EffectDefinition, EffectRule
+from app.modules.locations.models import Location, LocationTransition
 from app.modules.stats.models import StatDefinition
 
 
@@ -307,6 +308,8 @@ def create_admin_views(password_hasher: PasswordHasher, images: ImageService | N
     return (
         AccountAdmin(Account, password_hasher, icon='fa-solid fa-user-lock', label='Accounts'),
         SessionAdmin(Session, icon='fa-solid fa-key', label='Sessions'),
+        ImageContentAdmin(Location, images, icon='fa-solid fa-map', label='Locations'),
+        ContentModelAdmin(LocationTransition, icon='fa-solid fa-route', label='Location transitions'),
         CharacterAdmin(Character, icon='fa-solid fa-user', label='Characters'),
         FightAdmin(Fight, icon='fa-solid fa-shield-halved', label='Fights'),
         FightParticipantsAdmin(
