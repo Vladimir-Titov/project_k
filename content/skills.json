@@ -1,0 +1,625 @@
+{
+  "classes": [
+    {
+      "code": "magician",
+      "title": "Маг",
+      "description": "Магический урон, ослабления, щиты и лечение."
+    },
+    {
+      "code": "warrior",
+      "title": "Воин",
+      "description": "Удары, усиления, крепкая защита и кровотечение."
+    },
+    {
+      "code": "adventurer",
+      "title": "Путешественник",
+      "description": "Стрельба, засады, ловушки, яды и выживание."
+    }
+  ],
+  "skills": [
+    {
+      "code": "mage_fireball",
+      "class_code": "magician",
+      "icon": "mage/fireball.webp",
+      "title": "Огненный шар",
+      "description": "Огненный удар: 110% атаки минус половина защиты врага.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Ожог огненного шара",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 1.1 - target.defense * 0.5))",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "mage_ice_arrow",
+      "class_code": "magician",
+      "icon": "mage/ice-arrow.webp",
+      "title": "Ледяная стрела",
+      "description": "Наносит 75% атаки минус половина защиты; снижает атаку врага на 25% на 2 его хода.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Урон ледяной стрелы",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.75 - target.defense * 0.5))",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        },
+        {
+          "title": "Обморожение",
+          "duration_turns": 2,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "attack",
+              "expression": "0.75",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "mage_chain_lightning",
+      "class_code": "magician",
+      "icon": "mage/chain-lightning.webp",
+      "title": "Цепная молния",
+      "description": "Три разряда в одного врага: каждый наносит 35% атаки минус 20% защиты. Для пробных дуэлей.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Разряды молнии",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.35 - target.defense * 0.2))",
+              "operation": "add",
+              "kind": "resource_delta"
+            },
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.35 - target.defense * 0.2))",
+              "operation": "add",
+              "kind": "resource_delta"
+            },
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.35 - target.defense * 0.2))",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "mage_magic_shield",
+      "class_code": "magician",
+      "icon": "mage/magic-shield.webp",
+      "title": "Магический щит",
+      "description": "Увеличивает свою защиту на 6 на 2 собственных хода.",
+      "target_policy": "self",
+      "effects": [
+        {
+          "title": "Магический щит",
+          "duration_turns": 2,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "defense",
+              "expression": "6",
+              "operation": "add",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "mage_healing",
+      "class_code": "magician",
+      "icon": "mage/healing.webp",
+      "title": "Лечение",
+      "description": "Восстанавливает себе 6 здоровья плюс 35% атаки, не выше максимума.",
+      "target_policy": "self",
+      "effects": [
+        {
+          "title": "Исцеление",
+          "duration_turns": null,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "round_half_up(6 + source.attack * 0.35)",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "mage_curse",
+      "class_code": "magician",
+      "icon": "mage/curse.webp",
+      "title": "Проклятие",
+      "description": "Снижает атаку врага на 30%, а защиту на 40% на 3 его хода.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Проклятие",
+          "duration_turns": 3,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "attack",
+              "expression": "0.7",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            },
+            {
+              "stat_code": "defense",
+              "expression": "0.6",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "mage_roots",
+      "class_code": "magician",
+      "icon": "mage/roots.webp",
+      "title": "Оковы",
+      "description": "Снижает атаку врага наполовину на 1 его ход и наносит 3 урона в конце этого хода.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Сковывающие корни",
+          "duration_turns": 1,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "attack",
+              "expression": "0.5",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            },
+            {
+              "stat_code": "health",
+              "expression": "-3",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "warrior_strike",
+      "class_code": "warrior",
+      "icon": "warrior/strike.webp",
+      "title": "Удар",
+      "description": "Наносит урон от атаки минус защита врага со случайным разбросом 90–110%.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Урон удара",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(max(1, source.attack - target.defense) * random_int(90, 110) / 100))",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "warrior_block",
+      "class_code": "warrior",
+      "icon": "warrior/block.webp",
+      "title": "Блок",
+      "description": "Увеличивает свою защиту на 8 на 1 собственный ход.",
+      "target_policy": "self",
+      "effects": [
+        {
+          "title": "Блок",
+          "duration_turns": 1,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "defense",
+              "expression": "8",
+              "operation": "add",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "warrior_rage",
+      "class_code": "warrior",
+      "icon": "warrior/rage.webp",
+      "title": "Ярость",
+      "description": "Увеличивает свою атаку на 60%, но уменьшает защиту вдвое на 2 собственных хода.",
+      "target_policy": "self",
+      "effects": [
+        {
+          "title": "Ярость",
+          "duration_turns": 2,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "attack",
+              "expression": "1.6",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            },
+            {
+              "stat_code": "defense",
+              "expression": "0.5",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "warrior_empower",
+      "class_code": "warrior",
+      "icon": "warrior/empower.webp",
+      "title": "Усиление",
+      "description": "Добавляет себе 4 атаки и 2 защиты на 3 собственных хода.",
+      "target_policy": "self",
+      "effects": [
+        {
+          "title": "Боевой настрой",
+          "duration_turns": 3,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "attack",
+              "expression": "4",
+              "operation": "add",
+              "kind": "stat_modifier"
+            },
+            {
+              "stat_code": "defense",
+              "expression": "2",
+              "operation": "add",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "warrior_armor_break",
+      "class_code": "warrior",
+      "icon": "warrior/armor-break.webp",
+      "title": "Пробитие брони",
+      "description": "Наносит 80% атаки минус защита врага; уменьшает его защиту на 60% на 3 его хода.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Бронебойный удар",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.8 - target.defense))",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        },
+        {
+          "title": "Расколотая броня",
+          "duration_turns": 3,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "defense",
+              "expression": "0.4",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "warrior_bleeding",
+      "class_code": "warrior",
+      "icon": "warrior/bleeding.webp",
+      "title": "Кровотечение",
+      "description": "Ранит на 50% атаки минус половина защиты; затем наносит по 3 урона в конце 3 ходов врага.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Режущий удар",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.5 - target.defense * 0.5))",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        },
+        {
+          "title": "Кровотечение",
+          "duration_turns": 3,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-3",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "adventurer_shot",
+      "class_code": "adventurer",
+      "icon": "adventurer/shot.webp",
+      "title": "Выстрел",
+      "description": "Прицельный выстрел: атака минус 75% защиты врага.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Урон выстрела",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack - target.defense * 0.75))",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "adventurer_multi_shot",
+      "class_code": "adventurer",
+      "icon": "adventurer/multi-shot.webp",
+      "title": "Множественный выстрел",
+      "description": "Три стрелы в одного врага: каждая наносит 45% атаки минус половина защиты.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Залп стрел",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.45 - target.defense * 0.5))",
+              "operation": "add",
+              "kind": "resource_delta"
+            },
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.45 - target.defense * 0.5))",
+              "operation": "add",
+              "kind": "resource_delta"
+            },
+            {
+              "stat_code": "health",
+              "expression": "-max(1, round_half_up(source.attack * 0.45 - target.defense * 0.5))",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "adventurer_stealth",
+      "class_code": "adventurer",
+      "icon": "adventurer/stealth.webp",
+      "title": "Скрытность",
+      "description": "На 1 собственный ход добавляет 6 защиты и увеличивает атаку на 35%.",
+      "target_policy": "self",
+      "effects": [
+        {
+          "title": "Засада",
+          "duration_turns": 1,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "defense",
+              "expression": "6",
+              "operation": "add",
+              "kind": "stat_modifier"
+            },
+            {
+              "stat_code": "attack",
+              "expression": "1.35",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "adventurer_haste",
+      "class_code": "adventurer",
+      "icon": "adventurer/haste.webp",
+      "title": "Ускорение",
+      "description": "Ускоряет атаки: +30% атаки и +2 защиты на 2 собственных хода. Дополнительных ходов не даёт.",
+      "target_policy": "self",
+      "effects": [
+        {
+          "title": "Ускорение",
+          "duration_turns": 2,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "attack",
+              "expression": "1.3",
+              "operation": "multiply",
+              "kind": "stat_modifier"
+            },
+            {
+              "stat_code": "defense",
+              "expression": "2",
+              "operation": "add",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "adventurer_trap",
+      "class_code": "adventurer",
+      "icon": "adventurer/trap.webp",
+      "title": "Ловушка",
+      "description": "Наносит 4 урона и снижает защиту врага на 3 на 2 его хода.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Срабатывание капкана",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-4",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        },
+        {
+          "title": "В капкане",
+          "duration_turns": 2,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "defense",
+              "expression": "-3",
+              "operation": "add",
+              "kind": "stat_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "adventurer_poisoning",
+      "class_code": "adventurer",
+      "icon": "adventurer/poisoning.webp",
+      "title": "Отравление",
+      "description": "Отравленная стрела наносит 3 урона сразу и по 2 урона в конце следующих 4 ходов врага.",
+      "target_policy": "enemy",
+      "effects": [
+        {
+          "title": "Отравленная стрела",
+          "duration_turns": null,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-3",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        },
+        {
+          "title": "Яд",
+          "duration_turns": 4,
+          "target_selector": "enemy",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "-2",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "adventurer_survival",
+      "class_code": "adventurer",
+      "icon": "adventurer/survival.webp",
+      "title": "Выживание",
+      "description": "Восстанавливает 5 здоровья сразу и ещё по 3 в конце 3 собственных ходов, не выше максимума.",
+      "target_policy": "self",
+      "effects": [
+        {
+          "title": "Перевязка",
+          "duration_turns": null,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "5",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        },
+        {
+          "title": "Восстановление",
+          "duration_turns": 3,
+          "target_selector": "self",
+          "rules": [
+            {
+              "stat_code": "health",
+              "expression": "3",
+              "operation": "add",
+              "kind": "resource_delta"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "skipped": [
+    "warrior/dash.webp",
+    "warrior/protect-allies.webp",
+    "mage/teleportation.webp",
+    "adventurer/scouting.webp"
+  ]
+}

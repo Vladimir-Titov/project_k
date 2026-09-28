@@ -1,0 +1,1 @@
+"""PvE bot templates."""
